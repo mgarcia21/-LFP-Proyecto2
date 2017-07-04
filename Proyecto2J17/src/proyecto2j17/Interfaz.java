@@ -25,10 +25,11 @@ public class Interfaz extends javax.swing.JFrame {
     Errores[] cabezaE = new Errores[5];
     boolean[] guardado = new boolean[5];
     String[] archivo = new String[5];
+    Tokens temporalT;
     int prueba = 0;
     int NoTab = 0;
     int TabA =0;
-    String ubica ="";
+    String[] ubica = new String[5];
     
     
     /**
@@ -42,6 +43,7 @@ public class Interfaz extends javax.swing.JFrame {
             archivo[i] = ""; 
             cabezaT[i] = new Tokens("","","",0,0,0,null);
             cabezaE[i] = new Errores("", "", "", "", 0, 0, null);
+            ubica[i]="";
         }
     }
 
@@ -71,8 +73,8 @@ public class Interfaz extends javax.swing.JFrame {
         jMenuItem3 = new javax.swing.JMenuItem();
         jMenuItem4 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
-        jMenuItem5 = new javax.swing.JMenuItem();
-        jMenuItem6 = new javax.swing.JMenuItem();
+        JTokens = new javax.swing.JMenuItem();
+        JErrores = new javax.swing.JMenuItem();
 
         jCheckBoxMenuItem1.setSelected(true);
         jCheckBoxMenuItem1.setText("jCheckBoxMenuItem1");
@@ -144,13 +146,18 @@ public class Interfaz extends javax.swing.JFrame {
 
         jMenu2.setText("Reportes");
 
-        jMenuItem5.setText("Tokens");
-        jMenuItem5.setEnabled(false);
-        jMenu2.add(jMenuItem5);
+        JTokens.setText("Tokens");
+        JTokens.setEnabled(false);
+        JTokens.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JTokensActionPerformed(evt);
+            }
+        });
+        jMenu2.add(JTokens);
 
-        jMenuItem6.setText("Errores");
-        jMenuItem6.setEnabled(false);
-        jMenu2.add(jMenuItem6);
+        JErrores.setText("Errores");
+        JErrores.setEnabled(false);
+        jMenu2.add(JErrores);
 
         jMenuBar1.add(jMenu2);
 
@@ -242,7 +249,7 @@ public class Interfaz extends javax.swing.JFrame {
                     String[] parts = archivo[NoTab].split("\\\\");
                     
                     guardado[NoTab] = true;
-                    ubica = selectedFile.getParent();
+                    ubica[NoTab] = selectedFile.getParent();
                     Paneles.add(scroll,parts[parts.length -1]);
                     Paneles.setSelectedIndex(NoTab);
                     NoTab++;
@@ -272,7 +279,7 @@ public class Interfaz extends javax.swing.JFrame {
                     
                 }
             archivo[TabA] = fileToSave.getAbsolutePath();
-            ubica = fileToSave.getParent();
+            ubica[TabA] = fileToSave.getParent();
             
             guardado[TabA] = true;
 }
@@ -305,7 +312,8 @@ public class Interfaz extends javax.swing.JFrame {
         TabA = Paneles.getSelectedIndex();
         Lexico lexico = new Lexico();
         lexico.AnalisisLexico(TabA,tabs[TabA].getText());
-        System.out.println(prueba);
+        cabezaT[TabA] = lexico.getCabezaT();
+        JTokens.setEnabled(true);
         debugeo();
         
         
@@ -313,6 +321,63 @@ public class Interfaz extends javax.swing.JFrame {
         
         
     }//GEN-LAST:event_ButtonAActionPerformed
+
+    private void JTokensActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JTokensActionPerformed
+        TabA = Paneles.getSelectedIndex();
+        int num = 1;
+       temporalT = cabezaT[TabA].getSiguiente();
+       
+        
+        
+        try {
+            File file = new File(ubica[TabA]+"\\Tokens.html");
+            file.getParentFile().mkdirs(); // Will create parent directories if not exists
+            file.createNewFile();
+            java.io.FileOutputStream archivo = new java.io.FileOutputStream(file);
+            archivo.write("<html>".getBytes());
+            archivo.write("<head>".getBytes());
+            archivo.write("<title>Proyecto 2</title>".getBytes());
+            archivo.write("<style>\n table, th, td { border: 1px solid black;   border-collapse: collapse; padding: 10px; } </style>".getBytes());
+            archivo.write("</head>".getBytes());
+            archivo.write("<body>".getBytes());
+            archivo.write("<center>".getBytes());
+            archivo.write("<h1>Listado de Tokens </h1>".getBytes());
+            
+            
+            archivo.write("<center><table border=\"1\"><col width=\"130\"><col width=\"130\"><col width=\"130\"><col width=\"130\"><col width=\"130\"><col width=\"130\"> ".getBytes());
+            
+            archivo.write("<tr><th>No.</th><th>Token</th><th>Lexema</th><th>Linea</th><th>Columna</th><th>Id</th></tr>".getBytes());
+            
+            while(temporalT != null){
+        archivo.write("<tr>".getBytes());
+        
+            archivo.write(("<td>" + String.valueOf(num) + "</td> <td> " + temporalT.getCompLex() + "</td> <td> " + temporalT.getLexema() + "</td><td> " + String.valueOf(temporalT.getFila()) + "</td> <td> " + String.valueOf(temporalT.getColumna()) + "</td><td> " + temporalT.getId() + "</td>").getBytes());
+                
+        
+                archivo.write("<tr>".getBytes());
+                
+        temporalT = temporalT.getSiguiente();
+        num++;
+        }
+         archivo.write("</table>".getBytes());   
+            
+            
+            
+            archivo.write("</table>\n".getBytes());
+            archivo.write("</body>\n".getBytes());
+            archivo.write("</html>".getBytes());
+           Runtime.getRuntime().exec("explorer.exe "+ubica[TabA]+"\\Tokens.html");
+        } catch (java.io.IOException ae) {
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+    }//GEN-LAST:event_JTokensActionPerformed
 
     /**
      * @param args the command line arguments
@@ -352,6 +417,8 @@ public class Interfaz extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton ButtonA;
     private javax.swing.JButton ButtonGCL;
+    private javax.swing.JMenuItem JErrores;
+    private javax.swing.JMenuItem JTokens;
     private javax.swing.JList ListaCL;
     private javax.swing.JList ListaP;
     private javax.swing.JTabbedPane Paneles;
@@ -365,8 +432,6 @@ public class Interfaz extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
-    private javax.swing.JMenuItem jMenuItem5;
-    private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     // End of variables declaration//GEN-END:variables
@@ -375,4 +440,7 @@ public class Interfaz extends javax.swing.JFrame {
         int xyz =0;
         xyz++;
     }
+    
+    
+    
 }
