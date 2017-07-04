@@ -5,21 +5,37 @@
  */
 package proyecto2j17;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
 import javax.swing.JOptionPane;
+import javax.swing.*;
 import javax.swing.JTextField;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  *
  * @author Oswaldo
  */
 public class Interfaz extends javax.swing.JFrame {
-    JTextField[] tabs = new JTextField[4];
+    JTextArea[] tabs = new JTextArea[5];
+    boolean[] guardado = new boolean[5];
+    String[] archivo = new String[5];
     int NoTab = 0;
+    int TabA =0;
+    String ubica ="";
     /**
      * Creates new form Interfaz
      */
     public Interfaz() {
         initComponents();
+        
+        for (int i = 0; i<5;i++){
+            guardado[i] = false;
+            archivo[i] = ""; 
+        }
     }
 
     /**
@@ -32,7 +48,6 @@ public class Interfaz extends javax.swing.JFrame {
     private void initComponents() {
 
         Paneles = new javax.swing.JTabbedPane();
-        jTextField1 = new javax.swing.JTextField();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -44,9 +59,6 @@ public class Interfaz extends javax.swing.JFrame {
         jMenuItem6 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        jTextField1.setText("jTextField1");
-        Paneles.addTab("tab1", jTextField1);
 
         jMenu1.setText("Archivo");
 
@@ -67,6 +79,11 @@ public class Interfaz extends javax.swing.JFrame {
         jMenu1.add(jMenuItem2);
 
         jMenuItem3.setText("Guardar");
+        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem3ActionPerformed(evt);
+            }
+        });
         jMenu1.add(jMenuItem3);
 
         jMenuItem4.setText("Cerrar");
@@ -103,7 +120,8 @@ public class Interfaz extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(Paneles, javax.swing.GroupLayout.DEFAULT_SIZE, 346, Short.MAX_VALUE)
+                .addContainerGap()
+                .addComponent(Paneles, javax.swing.GroupLayout.DEFAULT_SIZE, 335, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -111,10 +129,11 @@ public class Interfaz extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        if (NoTab <4){
-        tabs[NoTab] = new JTextField();
+        if (NoTab <5){
+        tabs[NoTab] = new JTextArea();
         tabs[NoTab].setText(""+NoTab);
         Paneles.add(tabs[NoTab],"NewTab");
+        Paneles.setSelectedIndex(NoTab);
         NoTab++;
         }else{
             JOptionPane.showMessageDialog(null, "Se a alcanzado el numero maximo de paneles");
@@ -126,8 +145,85 @@ public class Interfaz extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-        // TODO add your handling code here:
+        if (NoTab <5){
+        tabs[NoTab] = new JTextArea();
+        tabs[NoTab].setText(""+NoTab);
+        
+       
+       
+        JFileChooser fileChooser = new JFileChooser();
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("*.ecys","ecys");
+        fileChooser.setFileFilter(filter);
+        File selectedFile = null;
+        fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")+"/Desktop"));
+        int result = fileChooser.showOpenDialog(this);
+        if (result == JFileChooser.APPROVE_OPTION) {
+        selectedFile = fileChooser.getSelectedFile();
+        }
+        try{
+                    FileReader reader = new FileReader( selectedFile );
+                    BufferedReader br = new BufferedReader(reader);
+                    tabs[NoTab].read( br, null );
+                    br.close();
+                    tabs[NoTab].requestFocus();
+                    archivo[NoTab] = selectedFile.getAbsolutePath();
+                    String[] parts = archivo[NoTab].split("\\\\");
+                    
+                    guardado[NoTab] = true;
+                    ubica = selectedFile.getParent();
+                    Paneles.add(tabs[NoTab],parts[parts.length -1]);
+                    Paneles.setSelectedIndex(NoTab);
+                    NoTab++;
+                }
+                catch(Exception e2) { System.out.println(e2); 
+                }
+             }else{
+            JOptionPane.showMessageDialog(null, "Se a alcanzado el numero maximo de paneles");
+        }
+               // TODO add your handling code here:
     }//GEN-LAST:event_jMenuItem2ActionPerformed
+
+    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+        TabA = Paneles.getSelectedIndex();
+        try
+                {
+        if (guardado[TabA] == false){
+            JFileChooser fileChooser = new JFileChooser();
+            FileNameExtensionFilter filter = new FileNameExtensionFilter("*.ecys","ecys");
+            fileChooser.setFileFilter(filter);
+            fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")+"/Desktop"));
+            fileChooser.setDialogTitle("Specify a file to save");   
+            int userSelection = fileChooser.showSaveDialog(this);
+            File fileToSave = null;
+                if (userSelection == JFileChooser.APPROVE_OPTION) {
+                    fileToSave = fileChooser.getSelectedFile();
+                    
+                }
+            archivo[TabA] = fileToSave.getAbsolutePath();
+            ubica = fileToSave.getParent();
+            
+            guardado[TabA] = true;
+}
+        
+            if (!archivo[TabA].endsWith(".ecys"))
+                archivo[TabA] += ".ecys";
+        
+        
+                    FileWriter writer = new FileWriter( archivo[TabA] );
+                    BufferedWriter bw = new BufferedWriter( writer );
+                    tabs[TabA].write( bw );
+                    bw.close();
+                    
+                   tabs[TabA].requestFocus();
+                   String[] parts = archivo[TabA].split("\\\\");
+                    Paneles.setTitleAt(TabA,parts[parts.length -1]);
+                }
+                catch(Exception e2) {}
+        
+        
+        
+        
+    }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -175,6 +271,5 @@ public class Interfaz extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
-    private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables
 }
