@@ -19,9 +19,13 @@ public class Lexico extends Interfaz {
     int fila = 0; 
     int columna = 0;
     Tokens token;
+    Errores error;
     private Tokens CabezaT;
+    private Errores CabezaE;
     boolean coment = false;
+    boolean err = false;
     Tokens temporalT;
+    Errores temporalE;
     ArrayList<String> reservadas = new ArrayList();
     public void AnalisisLexico(int tabA, String texto){
         reservadas.add("No_Terminales");
@@ -37,6 +41,7 @@ public class Lexico extends Interfaz {
         fila = 1;
         columna = 0;
         CabezaT = new Tokens("","","",0,0,0,null);
+        CabezaE = new Errores("","","","",0,0,null);
         
         Scanner scanner = new Scanner(texto);
         while (scanner.hasNextLine()) {
@@ -86,7 +91,9 @@ public class Lexico extends Interfaz {
                             
                                  
                         }else {
-                            
+                           lexema = "";
+                            estado = 999;
+                            i = i - 1; 
                             
                         }
                         
@@ -104,6 +111,11 @@ public class Lexico extends Interfaz {
                             estado = 0;
                             
                         } else if (ascii == 32){
+                            
+                        }else{
+                            lexema = "";
+                            estado = 999;
+                            i = i - 1;
                             
                         }
                         
@@ -189,9 +201,13 @@ public class Lexico extends Interfaz {
                         if (ascii == 58){
                             lexema = lexema + (char)ascii;
                             estado = 8;
+                        }else if (ascii == 32 || ascii == 9){
                             
                         }else{
-                            
+                            Aceptacion(lexema,fila,columna,ascii);
+                           lexema = "";
+                            estado = 0;
+                            i = i - 1; 
                             
                         }
                         break;
@@ -202,7 +218,9 @@ public class Lexico extends Interfaz {
                             estado = 9;
                             
                         }else{
-                            
+                            lexema = "";
+                            estado = 999;
+                            i = i - 1;
                             
                         }
                         break;    
@@ -227,7 +245,9 @@ public class Lexico extends Interfaz {
                             estado = 12;
                             
                         }else{
-                            
+                            lexema = "";
+                            estado = 999;
+                            i = i - 1;
                         }
                         
                         
@@ -240,7 +260,9 @@ public class Lexico extends Interfaz {
                             
                             
                         } else{
-                            
+                           lexema = "";
+                            estado = 999;
+                            i = i - 1; 
                             
                         }
                     break;
@@ -276,7 +298,12 @@ public class Lexico extends Interfaz {
                         break;
                         
                         
-                        
+                    case 999:
+                        lexema = lexema + (char)ascii;
+                        Aceptacion(lexema, fila, columna, ascii);
+                        lexema = "";
+                        estado = 0;
+                        break;
                     
                     
                 }
@@ -365,6 +392,10 @@ public class Lexico extends Interfaz {
                 break;
             case 6: 
                 token = new Tokens(lexema, "Comentario", "", fila,columna-lexema.length()+1, 0, null);
+                break;
+                
+            case 7: 
+                token = new Tokens(lexema, "Dos Puntos", "", fila,columna-lexema.length()+1, 165, null);
                 break;
             
             case 9:
@@ -457,14 +488,33 @@ public class Lexico extends Interfaz {
                 
                 
             case 15:
-                token = new Tokens(lexema, "Cadena", "", fila,columna-lexema.length()+1, 155, null); 
+                token = new Tokens(lexema, "Cadena", "", fila,columna-lexema.length()+1, 160, null); 
                 
                 break;
+                
+            case 999:
+                error = new Errores(lexema,"Carácter Desconocido","Lexico","",fila+1,columna-lexema.length()+1,null);
+                        err = true;
         }
         
         
         
         debugeo();
+        if (estado == 999){
+             
+            temporalE = getCabezaE();
+            while(temporalE.getSiguiente() != null){
+            temporalE = temporalE.getSiguiente();
+          
+        }
+            
+        temporalE.setSiguiente(error); 
+            
+        }else{
+        
+        
+        
+        
         temporalT = getCabezaT();
         
         while(temporalT.getSiguiente() != null){
@@ -472,7 +522,7 @@ public class Lexico extends Interfaz {
           
         }
         temporalT.setSiguiente(token);  
-    
+        }
     
     
     
@@ -490,6 +540,13 @@ public class Lexico extends Interfaz {
      */
     public Tokens getCabezaT() {
         return CabezaT;
+    }
+
+    /**
+     * @return the CabezaE
+     */
+    public Errores getCabezaE() {
+        return CabezaE;
     }
 
     

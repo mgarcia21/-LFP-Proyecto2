@@ -26,6 +26,7 @@ public class Interfaz extends javax.swing.JFrame {
     boolean[] guardado = new boolean[5];
     String[] archivo = new String[5];
     Tokens temporalT;
+    Errores temporalE;
     int prueba = 0;
     int NoTab = 0;
     int TabA =0;
@@ -157,6 +158,11 @@ public class Interfaz extends javax.swing.JFrame {
 
         JErrores.setText("Errores");
         JErrores.setEnabled(false);
+        JErrores.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JErroresActionPerformed(evt);
+            }
+        });
         jMenu2.add(JErrores);
 
         jMenuBar1.add(jMenu2);
@@ -313,7 +319,9 @@ public class Interfaz extends javax.swing.JFrame {
         Lexico lexico = new Lexico();
         lexico.AnalisisLexico(TabA,tabs[TabA].getText());
         cabezaT[TabA] = lexico.getCabezaT();
+        cabezaE[TabA] = lexico.getCabezaE();
         JTokens.setEnabled(true);
+        JErrores.setEnabled(true);
         debugeo();
         
         
@@ -378,6 +386,54 @@ public class Interfaz extends javax.swing.JFrame {
         
         
     }//GEN-LAST:event_JTokensActionPerformed
+
+    private void JErroresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JErroresActionPerformed
+        TabA = Paneles.getSelectedIndex();
+        int num = 1;
+        temporalE = cabezaE[TabA].getSiguiente();
+       
+       
+        
+        
+        try {
+            File file = new File(ubica[TabA]+"\\Errores.html");
+            file.getParentFile().mkdirs(); // Will create parent directories if not exists
+            file.createNewFile();
+            java.io.FileOutputStream archivo = new java.io.FileOutputStream(file);
+            archivo.write("<html>".getBytes());
+            archivo.write("<head>".getBytes());
+            archivo.write("<title>Proyecto 2</title>".getBytes());
+            archivo.write("<style>\n table, th, td { border: 1px solid black;   border-collapse: collapse; padding: 10px; } </style>".getBytes());
+            archivo.write("</head>".getBytes());
+            archivo.write("<body>".getBytes());
+            archivo.write("<center>".getBytes());
+            archivo.write("<h1>Listado de Errores </h1>".getBytes());
+            
+            
+            archivo.write("<center><table border=\"1\"><col width=\"130\"><col width=\"130\"><col width=\"130\"><col width=\"130\"><col width=\"130\"> <col width=\"130\">".getBytes());
+            
+            archivo.write("<tr><th>No.</th><th>Causa</th><th>Tipo</th><th>Descripcion</th><th>Fila</th><th>Columna</th></tr>".getBytes());
+            
+            while(temporalE != null){
+        archivo.write("<tr>".getBytes());
+                archivo.write(("<td>" + String.valueOf(num) + "</td> <td> " + temporalE.getLexema()+ "</td> <td> " + temporalE.getTipo()+ "</td> <td> " + temporalE.getDescripcion()+ "</td> <td> " + String.valueOf(temporalE.getFila()) + "</td> <td> " + String.valueOf(temporalE.getColumna()) + "</td>").getBytes());
+                archivo.write("<tr>".getBytes());
+                
+        temporalE = temporalE.getSiguiente();
+        num++;
+        }
+         archivo.write("</table>".getBytes());   
+            
+            
+            
+            archivo.write("</table>\n".getBytes());
+            archivo.write("</body>\n".getBytes());
+            archivo.write("</html>".getBytes());
+            Runtime.getRuntime().exec("explorer.exe "+ubica[TabA]+"\\Errores.html");
+        } catch (java.io.IOException ae) {
+            System.out.println(ae);
+        }
+    }//GEN-LAST:event_JErroresActionPerformed
 
     /**
      * @param args the command line arguments
