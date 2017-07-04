@@ -47,7 +47,16 @@ public class Interfaz extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jCheckBoxMenuItem1 = new javax.swing.JCheckBoxMenuItem();
+        buttonGroup1 = new javax.swing.ButtonGroup();
         Paneles = new javax.swing.JTabbedPane();
+        ButtonA = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        ListaCL = new javax.swing.JList();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        ListaP = new javax.swing.JList();
+        ButtonGCL = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -58,7 +67,27 @@ public class Interfaz extends javax.swing.JFrame {
         jMenuItem5 = new javax.swing.JMenuItem();
         jMenuItem6 = new javax.swing.JMenuItem();
 
+        jCheckBoxMenuItem1.setSelected(true);
+        jCheckBoxMenuItem1.setText("jCheckBoxMenuItem1");
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        Paneles.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        Paneles.setAutoscrolls(true);
+
+        ButtonA.setLabel("Analisar");
+
+        ListaCL.setToolTipText("Componentes Lexicos");
+        ListaCL.setName(""); // NOI18N
+        jScrollPane1.setViewportView(ListaCL);
+
+        jScrollPane2.setViewportView(ListaP);
+
+        ButtonGCL.setEnabled(false);
+        ButtonGCL.setLabel("Graficar");
+
+        jButton3.setText("Graficar");
+        jButton3.setEnabled(false);
 
         jMenu1.setText("Archivo");
 
@@ -66,6 +95,11 @@ public class Interfaz extends javax.swing.JFrame {
         jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jMenuItem1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jMenuItem1KeyPressed(evt);
             }
         });
         jMenu1.add(jMenuItem1);
@@ -99,9 +133,11 @@ public class Interfaz extends javax.swing.JFrame {
         jMenu2.setText("Reportes");
 
         jMenuItem5.setText("Tokens");
+        jMenuItem5.setEnabled(false);
         jMenu2.add(jMenuItem5);
 
         jMenuItem6.setText("Errores");
+        jMenuItem6.setEnabled(false);
         jMenu2.add(jMenuItem6);
 
         jMenuBar1.add(jMenu2);
@@ -114,14 +150,33 @@ public class Interfaz extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(Paneles, javax.swing.GroupLayout.PREFERRED_SIZE, 406, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(319, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(Paneles, javax.swing.GroupLayout.PREFERRED_SIZE, 406, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(ButtonA, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(ButtonGCL, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(Paneles, javax.swing.GroupLayout.DEFAULT_SIZE, 335, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(Paneles)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(ButtonGCL, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(ButtonA, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -132,7 +187,10 @@ public class Interfaz extends javax.swing.JFrame {
         if (NoTab <5){
         tabs[NoTab] = new JTextArea();
         tabs[NoTab].setText(""+NoTab);
-        Paneles.add(tabs[NoTab],"NewTab");
+        tabs[NoTab].setAutoscrolls(true);
+        JScrollPane scroll = new JScrollPane (tabs[NoTab], 
+        JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+        Paneles.add(scroll,"NewTab");
         Paneles.setSelectedIndex(NoTab);
         NoTab++;
         }else{
@@ -148,7 +206,10 @@ public class Interfaz extends javax.swing.JFrame {
         if (NoTab <5){
         tabs[NoTab] = new JTextArea();
         tabs[NoTab].setText(""+NoTab);
-        
+        tabs[NoTab].setAutoscrolls(true);
+        tabs[NoTab].setAutoscrolls(true);
+        JScrollPane scroll = new JScrollPane (tabs[NoTab], 
+        JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
        
        
         JFileChooser fileChooser = new JFileChooser();
@@ -171,7 +232,7 @@ public class Interfaz extends javax.swing.JFrame {
                     
                     guardado[NoTab] = true;
                     ubica = selectedFile.getParent();
-                    Paneles.add(tabs[NoTab],parts[parts.length -1]);
+                    Paneles.add(scroll,parts[parts.length -1]);
                     Paneles.setSelectedIndex(NoTab);
                     NoTab++;
                 }
@@ -225,6 +286,10 @@ public class Interfaz extends javax.swing.JFrame {
         
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
+    private void jMenuItem1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jMenuItem1KeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenuItem1KeyPressed
+
     /**
      * @param args the command line arguments
      */
@@ -261,7 +326,14 @@ public class Interfaz extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton ButtonA;
+    private javax.swing.JButton ButtonGCL;
+    private javax.swing.JList ListaCL;
+    private javax.swing.JList ListaP;
     private javax.swing.JTabbedPane Paneles;
+    private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem1;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
@@ -271,5 +343,7 @@ public class Interfaz extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     // End of variables declaration//GEN-END:variables
 }
