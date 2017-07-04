@@ -21,11 +21,16 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  */
 public class Interfaz extends javax.swing.JFrame {
     JTextArea[] tabs = new JTextArea[5];
+    public Tokens[] cabezaT = new Tokens[5];
+    Errores[] cabezaE = new Errores[5];
     boolean[] guardado = new boolean[5];
     String[] archivo = new String[5];
+    int prueba = 0;
     int NoTab = 0;
     int TabA =0;
     String ubica ="";
+    
+    
     /**
      * Creates new form Interfaz
      */
@@ -35,6 +40,8 @@ public class Interfaz extends javax.swing.JFrame {
         for (int i = 0; i<5;i++){
             guardado[i] = false;
             archivo[i] = ""; 
+            cabezaT[i] = new Tokens("","","",0,0,0,null);
+            cabezaE[i] = new Errores("", "", "", "", 0, 0, null);
         }
     }
 
@@ -76,6 +83,11 @@ public class Interfaz extends javax.swing.JFrame {
         Paneles.setAutoscrolls(true);
 
         ButtonA.setLabel("Analisar");
+        ButtonA.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ButtonAActionPerformed(evt);
+            }
+        });
 
         ListaCL.setToolTipText("Componentes Lexicos");
         ListaCL.setName(""); // NOI18N
@@ -204,8 +216,7 @@ public class Interfaz extends javax.swing.JFrame {
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
         if (NoTab <5){
-        tabs[NoTab] = new JTextArea();
-        tabs[NoTab].setText(""+NoTab);
+        tabs[NoTab] = new JTextArea();          
         tabs[NoTab].setAutoscrolls(true);
         tabs[NoTab].setAutoscrolls(true);
         JScrollPane scroll = new JScrollPane (tabs[NoTab], 
@@ -290,6 +301,19 @@ public class Interfaz extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jMenuItem1KeyPressed
 
+    private void ButtonAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonAActionPerformed
+        TabA = Paneles.getSelectedIndex();
+        Lexico lexico = new Lexico();
+        lexico.AnalisisLexico(TabA,tabs[TabA].getText());
+        System.out.println(prueba);
+        debugeo();
+        
+        
+        
+        
+        
+    }//GEN-LAST:event_ButtonAActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -346,4 +370,9 @@ public class Interfaz extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     // End of variables declaration//GEN-END:variables
+
+    private void debugeo() {
+        int xyz =0;
+        xyz++;
+    }
 }
