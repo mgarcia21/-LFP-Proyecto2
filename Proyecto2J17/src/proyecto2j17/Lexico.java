@@ -77,6 +77,13 @@ public class Lexico extends Interfaz {
                             lexema = lexema + (char) ascii;
                             estado = 11;    
                         } else if (ascii == 32 || estado == 9) {
+                         
+                        
+                        } else if (ascii == 34) {
+                            lexema = lexema + (char) ascii;
+                            estado = 14;  
+                            
+                            
                                  
                         }else {
                             
@@ -236,14 +243,40 @@ public class Lexico extends Interfaz {
                             
                             
                         }
-                    
+                    break;
                     
                     case 13:
                         Aceptacion(lexema,fila,columna,ascii);
-                       
+                       i = i-1;
                         lexema = "";
                         estado = 0;
                         break;
+                        
+                        
+                    case 14:
+                        if (ascii == 34){
+                            lexema = lexema + (char)ascii;
+                            estado = 15;
+                            
+                        }else{
+                            lexema = lexema + (char)ascii;
+                            estado = 14;
+                            
+                            
+                        }
+                    break;
+                        
+                        
+                    case 15:
+                        
+                        Aceptacion(lexema,fila,columna,ascii);
+                       i = i-1;
+                        lexema = "";
+                        estado = 0;
+                        break;
+                        
+                        
+                        
                     
                     
                 }
@@ -419,6 +452,12 @@ public class Lexico extends Interfaz {
                 
             case 13:
                 token = new Tokens(lexema, "Simbolo", "", fila,columna-lexema.length()+1, 155, null); 
+                
+                break;
+                
+                
+            case 15:
+                token = new Tokens(lexema, "Cadena", "", fila,columna-lexema.length()+1, 155, null); 
                 
                 break;
         }
