@@ -22,7 +22,9 @@ public class Sintactico extends Interfaz{
     String ExR = "";
     String Titulo;
     private ArrayList<ExpresionRegular> ER = new ArrayList();
+    private ArrayList<Producciones> Prod = new ArrayList();
     boolean PR = false;
+    boolean PR2 = false;
     
     public Sintactico(ArrayList<MiniToken> tokens){
        this.tokens = tokens;
@@ -51,6 +53,10 @@ public class Sintactico extends Interfaz{
             if (PR){
                 ExR = ExR + tokens.get(pos).getLexema();
             }
+            if (PR2){
+                ExR = ExR + tokens.get(pos).getLexema();
+            
+        }
             
             
             
@@ -359,6 +365,8 @@ public class Sintactico extends Interfaz{
 //    LPRO -> IP $ LPRO'
     public void LPRO(){
         IP();
+        PR2 = false;
+            ListaPRO();
         Parea(90);
         LPROP();
         
@@ -370,6 +378,8 @@ public class Sintactico extends Interfaz{
     public void LPROP(){
         if(pre == 120){
             IP();
+            PR2 = false;
+            ListaPRO();
             Parea(90);
             LPROP();
             
@@ -379,7 +389,9 @@ public class Sintactico extends Interfaz{
     
 //    IP -> <id> ::= PO
     public void IP(){
+        
         Parea(120);
+        Titulo = "<" + tokens.get(pos).getLexema()+">" ;
         Parea(55);
         Parea(125);
         Parea(60);
@@ -389,6 +401,7 @@ public class Sintactico extends Interfaz{
     
 //    PO -> POT PO'
     public void PO(){
+        PR2 = true;
         POT();
         POP();
         
@@ -498,6 +511,19 @@ public class Sintactico extends Interfaz{
      */
     public ArrayList<ExpresionRegular> getER() {
         return ER;
+    }
+
+    /**
+     * @return the Prod
+     */
+    public ArrayList<Producciones> getProd() {
+        return Prod;
+    }
+
+    private void ListaPRO() {
+        debugeo();
+        getProd().add(new Producciones(Titulo, ExR));
+        ExR="";
     }
 
     

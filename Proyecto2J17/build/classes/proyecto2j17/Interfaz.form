@@ -105,9 +105,13 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
+              <Group type="103" groupAlignment="1" attributes="0">
                   <Component id="Paneles" min="-2" pref="406" max="-2" attributes="0"/>
-                  <Component id="ButtonA" alignment="1" min="-2" pref="114" max="-2" attributes="0"/>
+                  <Group type="102" attributes="0">
+                      <Component id="ButtonA" min="-2" pref="114" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="ButtonA1" min="-2" pref="114" max="-2" attributes="0"/>
+                  </Group>
               </Group>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="1" max="-2" attributes="0">
@@ -138,6 +142,7 @@
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="ButtonA" alignment="3" min="-2" pref="28" max="-2" attributes="0"/>
                   <Component id="jButton3" alignment="3" min="-2" pref="28" max="-2" attributes="0"/>
+                  <Component id="ButtonA1" alignment="3" min="-2" pref="28" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -159,7 +164,7 @@
     </Container>
     <Component class="javax.swing.JButton" name="ButtonA">
       <Properties>
-        <Property name="label" type="java.lang.String" value="Analisar"/>
+        <Property name="text" type="java.lang.String" value="Analizar"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ButtonAActionPerformed"/>
@@ -205,15 +210,21 @@
     </Container>
     <Component class="javax.swing.JButton" name="ButtonGCL">
       <Properties>
-        <Property name="enabled" type="boolean" value="false"/>
         <Property name="label" type="java.lang.String" value="Graficar"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="jButton3">
       <Properties>
         <Property name="text" type="java.lang.String" value="Graficar"/>
-        <Property name="enabled" type="boolean" value="false"/>
       </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="ButtonA1">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Graficar AP"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ButtonA1ActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>

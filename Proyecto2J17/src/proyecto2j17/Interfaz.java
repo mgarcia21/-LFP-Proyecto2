@@ -28,7 +28,9 @@ public class Interfaz extends javax.swing.JFrame {
     String[] archivo = new String[5];
     ArrayList<MiniToken> TpS = new ArrayList();
     ArrayList<ExpresionRegular> ER;
+    ArrayList<Producciones> Prod;
     ArrayList<String> contER = new ArrayList();
+    ArrayList<String> contPR = new ArrayList();
     Tokens temporalT;
     Errores temporalE;
     int prueba = 0;
@@ -72,6 +74,7 @@ public class Interfaz extends javax.swing.JFrame {
         ListaP = new javax.swing.JList();
         ButtonGCL = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
+        ButtonA1 = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -90,7 +93,7 @@ public class Interfaz extends javax.swing.JFrame {
         Paneles.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         Paneles.setAutoscrolls(true);
 
-        ButtonA.setLabel("Analisar");
+        ButtonA.setText("Analizar");
         ButtonA.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ButtonAActionPerformed(evt);
@@ -104,11 +107,16 @@ public class Interfaz extends javax.swing.JFrame {
 
         jScrollPane2.setViewportView(ListaP);
 
-        ButtonGCL.setEnabled(false);
         ButtonGCL.setLabel("Graficar");
 
         jButton3.setText("Graficar");
-        jButton3.setEnabled(false);
+
+        ButtonA1.setText("Graficar AP");
+        ButtonA1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ButtonA1ActionPerformed(evt);
+            }
+        });
 
         jMenu1.setText("Archivo");
 
@@ -181,9 +189,12 @@ public class Interfaz extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(Paneles, javax.swing.GroupLayout.PREFERRED_SIZE, 406, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(ButtonA, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(ButtonA, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(ButtonA1, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
@@ -207,7 +218,8 @@ public class Interfaz extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(ButtonA, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(ButtonA1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -339,6 +351,7 @@ public class Interfaz extends javax.swing.JFrame {
        }
         temporalE.setSiguiente(sintactico.getCabezaEr().getSiguiente()); 
         PoblarER(sintactico.getER());
+        PoblarPR(sintactico.getProd());
         
         
         
@@ -450,6 +463,10 @@ public class Interfaz extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_JErroresActionPerformed
 
+    private void ButtonA1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonA1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ButtonA1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -487,6 +504,7 @@ public class Interfaz extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton ButtonA;
+    private javax.swing.JButton ButtonA1;
     private javax.swing.JButton ButtonGCL;
     private javax.swing.JMenuItem JErrores;
     private javax.swing.JMenuItem JTokens;
@@ -544,12 +562,26 @@ public class Interfaz extends javax.swing.JFrame {
        for (int i = 0;i<ER.size();i++){
            contER.add(ER.get(i).getTitulo());
           model.addElement(contER.get(i));
-           
+           System.out.println(ER.get(i).getTitulo()+" -> "+ER.get(i).getER());
         }
        
        
        
        
+       
+    }
+
+    private void PoblarPR(ArrayList<Producciones> prod) {
+        Prod = prod;
+       DefaultListModel<String> model = new DefaultListModel<>();
+       ListaP.setModel(model);
+       for (int i = 0;i<Prod.size();i++){
+           contPR.add(Prod.get(i).getTitulo());
+          model.addElement(contPR.get(i));
+           System.out.println(Prod.get(i).getTitulo()+" -> "+Prod.get(i).getProduccion());
+        }
+        
+        
        
     }
 
