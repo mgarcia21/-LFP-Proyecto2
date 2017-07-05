@@ -350,10 +350,12 @@ public class Sintactico extends Interfaz{
     public void LID(){
         if(NoT){
             getNT().add(tokens.get(pos).getLexema().toLowerCase());
+            chequeoTerminales(tokens.get(pos).getLexema().toLowerCase());
             
         }else if(Te){
             getT().add(tokens.get(pos).getLexema().toLowerCase());
             chequeoDeclarado(tokens.get(pos).getLexema().toLowerCase());
+            chequeoNoTerminales(tokens.get(pos).getLexema().toLowerCase());
         }
         Parea(55);
         LIDP();
@@ -368,11 +370,12 @@ public class Sintactico extends Interfaz{
             Parea(115);
             if(NoT){
                 getNT().add(tokens.get(pos).getLexema().toLowerCase());
-                
+                chequeoTerminales(tokens.get(pos).getLexema().toLowerCase());
                 
         }else if(Te){
                 getT().add(tokens.get(pos).getLexema().toLowerCase());
                 chequeoDeclarado(tokens.get(pos).getLexema().toLowerCase());
+                chequeoNoTerminales(tokens.get(pos).getLexema().toLowerCase());
         }
             Parea(55);
             LIDP();
@@ -656,6 +659,57 @@ public class Sintactico extends Interfaz{
         
         
     }   
+
+    private void chequeoTerminales(String compara) {
+        boolean nova = false;
+        for(int i = 0;i< getER().size();i++){
+            if (compara.equals(getER().get(i).getTitulo().toLowerCase())){
+                nova = true;
+                
+            }
+            
+            
+        }   
+        for(int i = 0;i<getR().size();i++){
+            if (compara.equals(getR().get(i).toString().toLowerCase())){
+                nova = true;
+                
+            }
+            
+            
+        }
+        
+        if(nova){
+            ErrorS("Terminal en No Teminales",compara);
+            nova = false;
+            
+        }
+        
+        
+        
+    }
+
+    private void chequeoNoTerminales(String compara) {
+        boolean novat = false;
+        for(int i =0; i<getNT().size();i++){
+            if(compara.equals(getNT().get(i).toString().toLowerCase())){
+                novat = true;
+                
+            }
+            
+            
+            
+        }
+        if(novat){
+            ErrorS("No Terminal en Terminales",compara);
+            
+            
+        }
+        
+        
+        
+        
+    }
 
     
     
