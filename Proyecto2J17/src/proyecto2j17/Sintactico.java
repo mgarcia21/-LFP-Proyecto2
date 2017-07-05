@@ -351,11 +351,13 @@ public class Sintactico extends Interfaz{
         if(NoT){
             getNT().add(tokens.get(pos).getLexema().toLowerCase());
             chequeoTerminales(tokens.get(pos).getLexema().toLowerCase());
+            chequeoRepetidoNT(tokens.get(pos).getLexema().toLowerCase());
             
         }else if(Te){
             getT().add(tokens.get(pos).getLexema().toLowerCase());
             chequeoDeclarado(tokens.get(pos).getLexema().toLowerCase());
             chequeoNoTerminales(tokens.get(pos).getLexema().toLowerCase());
+            chequeoRepetidoT(tokens.get(pos).getLexema().toLowerCase());
         }
         Parea(55);
         LIDP();
@@ -371,11 +373,12 @@ public class Sintactico extends Interfaz{
             if(NoT){
                 getNT().add(tokens.get(pos).getLexema().toLowerCase());
                 chequeoTerminales(tokens.get(pos).getLexema().toLowerCase());
-                
+                chequeoRepetidoNT(tokens.get(pos).getLexema().toLowerCase());
         }else if(Te){
                 getT().add(tokens.get(pos).getLexema().toLowerCase());
                 chequeoDeclarado(tokens.get(pos).getLexema().toLowerCase());
                 chequeoNoTerminales(tokens.get(pos).getLexema().toLowerCase());
+                chequeoRepetidoT(tokens.get(pos).getLexema().toLowerCase());
         }
             Parea(55);
             LIDP();
@@ -702,13 +705,50 @@ public class Sintactico extends Interfaz{
         }
         if(novat){
             ErrorS("No Terminal en Terminales",compara);
-            
+            novat = false;
             
         }
         
         
         
         
+    }
+
+    private void chequeoRepetidoNT(String compara) {
+        boolean igual = false;
+        for(int i = 0; i<getNT().size()-1;i++){
+            if(compara.equals(getNT().get(i).toString().toLowerCase())){
+                igual = true;
+                
+            }
+            
+            
+        }
+        if (igual){
+            ErrorS("No Terminal se repite", compara);
+            igual = false;
+        }
+        
+        
+        
+        
+        
+    }
+
+    private void chequeoRepetidoT(String compara) {
+        boolean igual = false;
+        for(int i = 0; i<getT().size()-1;i++){
+            if(compara.equals(getT().get(i).toString().toLowerCase())){
+                igual = true;
+                
+            }
+            
+            
+        }
+        if (igual){
+            ErrorS("Terminal se repite", compara);
+            igual = false;
+        }
     }
 
     
