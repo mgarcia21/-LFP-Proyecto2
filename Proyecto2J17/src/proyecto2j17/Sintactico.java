@@ -21,6 +21,13 @@ public class Sintactico extends Interfaz{
     Errores temporalEr;
     String ExR = "";
     String Titulo;
+    private String Inicio;
+    private ArrayList NT = new ArrayList();
+    private ArrayList T = new ArrayList();
+    private ArrayList R = new ArrayList();
+    boolean NoT = false;
+    boolean Te = false;
+    boolean Re = false;
     private ArrayList<ExpresionRegular> ER = new ArrayList();
     private ArrayList<Producciones> Prod = new ArrayList();
     boolean PR = false;
@@ -57,6 +64,7 @@ public class Sintactico extends Interfaz{
                 ExR = ExR + "//"+tokens.get(pos).getLexema();
             
         }
+            
             
             
             
@@ -272,6 +280,22 @@ public class Sintactico extends Interfaz{
     
 //    L-> id::="id"
     public void L(){
+        for(int i = 0; i<getER().size();i++){
+           
+            if (tokens.get(pos).getLexema().equals(getER().get(i).getTitulo())){
+               ErrorS("Nombre repetido",tokens.get(pos).getLexema());
+            }    
+        }
+        for(int i = 0;i < getR().size();i++){
+            if (tokens.get(pos).getLexema().equals(getR().get(i))){
+               ErrorS("Nombre repetido",tokens.get(pos).getLexema());
+            } 
+            
+            
+            
+        }
+        getR().add(tokens.get(pos).getLexema());
+        
         Parea(55);
         Parea(60);
         Parea(160);
@@ -296,10 +320,12 @@ public class Sintactico extends Interfaz{
     
 //    NT -> No_Terminales={LID} TE
     public void NT(){
+        NoT = true;
         Parea(5);
         Parea(130);
         Parea(105);
         LID();
+        NoT = false;
         Parea(110);
         TE();
         
@@ -308,10 +334,12 @@ public class Sintactico extends Interfaz{
     
 //    TE -> Terminales={LID} IN
     public void TE(){
+        Te = true;
         Parea(10);
         Parea(130);
         Parea(105);
         LID();
+        Te = false;
         Parea(110);
         IN();
         
@@ -320,6 +348,12 @@ public class Sintactico extends Interfaz{
     
 //    LID -> id LID'
     public void LID(){
+        if(NoT){
+            getNT().add(tokens.get(pos).getLexema().toLowerCase());
+            
+        }else if(Te){
+            getT().add(tokens.get(pos).getLexema().toLowerCase());
+        }
         Parea(55);
         LIDP();
         
@@ -331,6 +365,11 @@ public class Sintactico extends Interfaz{
     public void LIDP(){
         if(pre == 115){
             Parea(115);
+            if(NoT){
+                getNT().add(tokens.get(pos).getLexema().toLowerCase());
+        }else if(Te){
+                getT().add(tokens.get(pos).getLexema().toLowerCase());
+        }
             Parea(55);
             LIDP();
             
@@ -345,6 +384,7 @@ public class Sintactico extends Interfaz{
         Parea(15);
         Parea(130);
         Parea(120);
+        Inicio = tokens.get(pos).getLexema().toLowerCase();
         Parea(55);
         Parea(125);
         PROD();
@@ -497,6 +537,15 @@ public class Sintactico extends Interfaz{
     private void ListaER() {
         debugeo();
         getER().add(new ExpresionRegular(Titulo, ExR));
+        
+        for (int i =0;i< getER().size()-1;i++){
+            if (Titulo.equals(getER().get(i).getTitulo())){
+               ErrorS("Nombre repetido",Titulo);
+            }
+            
+            
+        }
+        
         ExR="";
         
         
@@ -525,6 +574,45 @@ public class Sintactico extends Interfaz{
         debugeo();
         getProd().add(new Producciones(Titulo, ExR));
         ExR="";
+    }
+
+    /**
+     * @return the Inicio
+     */
+    public String getInicio() {
+        return Inicio;
+    }
+
+    /**
+     * @return the NT
+     */
+    public ArrayList getNT() {
+        return NT;
+    }
+
+    /**
+     * @return the T
+     */
+    public ArrayList getT() {
+        return T;
+    }
+
+    /**
+     * @return the R
+     */
+    public ArrayList getR() {
+        return R;
+    }
+
+    private void ErrorS(String Descripcion,String Error) {
+        error = new Errores(Error,Descripcion,"Semantico","",tokens.get(pos).getFila(),tokens.get(pos).getColumna(),null);
+        
+        temporalEr = getCabezaEr();
+        while (temporalEr.getSiguiente() != null){
+            temporalEr = temporalEr.getSiguiente();
+            
+        }
+        temporalEr.setSiguiente(error);
     }
 
     

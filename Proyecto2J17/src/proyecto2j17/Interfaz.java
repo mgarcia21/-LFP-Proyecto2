@@ -11,6 +11,8 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 import javax.swing.JOptionPane;
 import javax.swing.*;
 import javax.swing.JTextField;
@@ -31,9 +33,14 @@ public class Interfaz extends javax.swing.JFrame {
     ArrayList<Producciones> Prod;
     ArrayList<String> contER = new ArrayList();
     ArrayList<String> contPR = new ArrayList();
+    String Inicio;
+    ArrayList NT = new ArrayList();
+    ArrayList T = new ArrayList();
+    ArrayList R = new ArrayList();
     ArrayList nodos = new ArrayList();
     ArrayList partes = new ArrayList();
     Tokens temporalT;
+    Errores error;
     Errores temporalE;
     int prueba = 0;
     int NoTab = 0;
@@ -364,6 +371,15 @@ public class Interfaz extends javax.swing.JFrame {
         PoblarER(sintactico.getER());
         PoblarPR(sintactico.getProd());
         
+        T = sintactico.getT();
+        NT = sintactico.getNT();
+        R = sintactico.getR();
+        Inicio = sintactico.getInicio();
+        Chequeo();
+        
+        
+        
+        
         
         
         
@@ -475,7 +491,17 @@ public class Interfaz extends javax.swing.JFrame {
     }//GEN-LAST:event_JErroresActionPerformed
 
     private void ButtonA1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonA1ActionPerformed
-        // TODO add your handling code here:
+
+        
+
+
+
+
+
+
+
+
+// TODO add your handling code here:
     }//GEN-LAST:event_ButtonA1ActionPerformed
 
     private void ButtonGCLActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonGCLActionPerformed
@@ -834,8 +860,41 @@ public class Interfaz extends javax.swing.JFrame {
             
         }
 
-    
+    private void Chequeo() {
+        if(repetidasERR()){
+            System.out.println("Repetidas");
+            error = new Errores("","","","",0,0,null);
+        }else{
+            System.out.println("NO");
+        }
+        
+        
+        
+        
+        
     }
+
+    private boolean repetidasERR() {
+        ArrayList lista = new ArrayList();
+        for(int i = 0; i < ER.size();i++){
+            lista.add(ER.get(i).getTitulo());
+            
+        }
+        for(int i = 0; i < R.size();i++){
+            lista.add(R.get(i));
+            
+        }
+        
+         Set inputSet = new HashSet(lista);
+         if(inputSet.size()< lista.size()){
+            return true;
+        }
+        return false;
+    }
+}
+
+    
+    
 
   
     
