@@ -353,6 +353,7 @@ public class Sintactico extends Interfaz{
             
         }else if(Te){
             getT().add(tokens.get(pos).getLexema().toLowerCase());
+            chequeoDeclarado(tokens.get(pos).getLexema().toLowerCase());
         }
         Parea(55);
         LIDP();
@@ -367,8 +368,11 @@ public class Sintactico extends Interfaz{
             Parea(115);
             if(NoT){
                 getNT().add(tokens.get(pos).getLexema().toLowerCase());
+                
+                
         }else if(Te){
                 getT().add(tokens.get(pos).getLexema().toLowerCase());
+                chequeoDeclarado(tokens.get(pos).getLexema().toLowerCase());
         }
             Parea(55);
             LIDP();
@@ -614,6 +618,44 @@ public class Sintactico extends Interfaz{
         }
         temporalEr.setSiguiente(error);
     }
+
+    private void chequeoDeclarado(String compara) {
+        boolean declara = false;
+        for(int i = 0;i< getER().size();i++){
+            if (compara.equals(getER().get(i).getTitulo().toLowerCase())){
+                declara = true;
+                
+            }
+            
+            
+        }   
+        for(int i = 0;i<getR().size();i++){
+            if (compara.equals(getR().get(i).toString().toLowerCase())){
+                declara = true;
+                
+            }
+            
+            
+        }
+        
+        
+        
+        if (declara){
+            
+            
+            
+        }else{
+            ErrorS("No Esta Declarada", compara);
+            declara = false;
+        }
+        
+        
+        
+        
+        
+        
+        
+    }   
 
     
     
