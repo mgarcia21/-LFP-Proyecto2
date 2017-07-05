@@ -326,6 +326,15 @@ public class Interfaz extends javax.swing.JFrame {
         JTokens.setEnabled(true);
         JErrores.setEnabled(true);
         CrearArray();
+       Sintactico sintactico = new Sintactico(TpS);
+       sintactico.analizar();
+       
+       temporalE = cabezaE[TabA];
+       while(temporalE.getSiguiente() != null){
+           temporalE = temporalE.getSiguiente();
+           
+       }
+        temporalE.setSiguiente(sintactico.getCabezaEr().getSiguiente()); 
         
         
         
@@ -507,7 +516,7 @@ public class Interfaz extends javax.swing.JFrame {
         debugeo();
         while(temporalT != null){
             if (temporalT.getId() != 0){
-                TpS.add(new MiniToken(temporalT.getLexema(),temporalT.getId(),temporalT.getCompLex()));
+                TpS.add(new MiniToken(temporalT.getLexema(),temporalT.getId(),temporalT.getCompLex(),temporalT.getFila(),temporalT.getColumna()));
                 
                 num++;   
                 
@@ -515,9 +524,9 @@ public class Interfaz extends javax.swing.JFrame {
             temporalT = temporalT.getSiguiente();
         }
         debugeo();
-        for (int i = 0; i < TpS.size();i++){
-            System.out.println(TpS.get(i).getId() + "    " + TpS.get(i).getLexema() + "     " + TpS.get(i).getTipo());
-        }
+//        for (int i = 0; i < TpS.size();i++){
+//            System.out.println(TpS.get(i).getId() + "    " + TpS.get(i).getLexema() + "     " + TpS.get(i).getTipo() + "   " + TpS.get(i).getFila()+ "   " + TpS.get(i).getColumna());
+//        }
         
         
         

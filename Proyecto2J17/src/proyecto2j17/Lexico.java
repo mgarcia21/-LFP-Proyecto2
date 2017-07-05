@@ -104,7 +104,7 @@ public class Lexico extends Interfaz {
                         if ((ascii>= 65 && ascii <= 90) || (ascii>= 97 && ascii <=122) || (48 <= ascii && ascii <= 57) || ascii == 95){
                             lexema = lexema + (char)ascii;
                             estado = 1;
-                        } else if( ascii==60 || ascii == 62 || ascii == 125 || ascii == 123 || ascii == 44 || ascii == 61 || ascii == 34 || ascii == 42 || ascii == 41 || ascii == 124 || ascii == 58 || ascii == 46 || ascii == 43 || ascii == 39 || ascii == 36 || ascii == 93){
+                        } else if( ascii==60 || ascii == 62 || ascii == 125 || ascii == 123 || ascii == 44 || ascii == 61 || ascii == 34 || ascii == 42 || ascii == 41 || ascii == 124 || ascii == 58 || ascii == 46 || ascii == 43 || ascii == 39 || ascii == 36 || ascii == 93 || ascii == 63){
                             Aceptacion(lexema,fila,columna,ascii);
                             i = i-1;
                             lexema = "";
@@ -483,6 +483,9 @@ public class Lexico extends Interfaz {
                 
             case 13:
                 token = new Tokens(lexema, "Simbolo", "", fila,columna-lexema.length()+1, 155, null); 
+                if (lexema.equals("'\"'")){
+                 token = new Tokens(lexema, "Comilla", "", fila,columna-lexema.length()+1, 165, null);
+                }
                 
                 break;
                 

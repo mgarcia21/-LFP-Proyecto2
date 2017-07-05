@@ -13,13 +13,17 @@ public class MiniToken {
      private String lexema;
     private int id;
     private String Tipo;
+    private int fila, columna;
 
-    public MiniToken(String lexema, int id, String Tipo) {
+    public MiniToken(String lexema, int id, String Tipo, int fila, int columna) {
         this.lexema = lexema;
         this.id = id;
         this.Tipo = Tipo;
+        this.fila = fila;
+        this.columna = columna;
     }
 
+    
     /**
      * @return the lexema
      */
@@ -60,6 +64,34 @@ public class MiniToken {
      */
     public void setTipo(String Tipo) {
         this.Tipo = Tipo;
+    }
+
+    /**
+     * @return the fila
+     */
+    public int getFila() {
+        return fila;
+    }
+
+    /**
+     * @param fila the fila to set
+     */
+    public void setFila(int fila) {
+        this.fila = fila;
+    }
+
+    /**
+     * @return the columna
+     */
+    public int getColumna() {
+        return columna;
+    }
+
+    /**
+     * @param columna the columna to set
+     */
+    public void setColumna(int columna) {
+        this.columna = columna;
     }
 
 }
