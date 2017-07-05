@@ -479,14 +479,19 @@ public class Interfaz extends javax.swing.JFrame {
     }//GEN-LAST:event_ButtonA1ActionPerformed
 
     private void ButtonGCLActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonGCLActionPerformed
-       ERsel = ListaCL.getSelectedIndex();
+       TabA = Paneles.getSelectedIndex();
+       nodos.clear();
+       partes.clear();
+       
+        ERsel = ListaCL.getSelectedIndex();
        String Expresion;
        Expresion = ER.get(ERsel).getER();
        String[] parts = Expresion.split("//");
         
         CrearCodigo(parts);
-        
-        
+        Dibujo dib = new Dibujo();
+        dib.Dibujar(codigo,ubica[TabA],ER.get(ERsel).getTitulo());
+        dib.setVisible(true);
         
         
         
@@ -626,7 +631,7 @@ public class Interfaz extends javax.swing.JFrame {
         buscarmasastint(partes,0);
         buscarConcat(partes,0);
         buscarO(partes,0);
-        
+        codigo+="}";
         System.out.println(codigo);
         
         
@@ -828,6 +833,8 @@ public class Interfaz extends javax.swing.JFrame {
             
             
         }
+
+    
     }
 
   

@@ -1,0 +1,13 @@
+digraph{
+rankdir=UD;
+n1[label="letra",shape="circle"];
+n2[label=".",shape="circle"];
+n3[label="letra",shape="circle"];
+n4[label="|",shape="circle"];
+n5[label="digito",shape="circle"];
+n6[label="*",shape="circle"];
+n4->n3;
+n4->n5;
+n6->n4;
+n2->n1;
+n2->n6;}
