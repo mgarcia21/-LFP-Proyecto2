@@ -112,9 +112,10 @@ public class Sintactico extends Interfaz{
    //    CL-> PR $ CL'
     public void CL() {
         PP();
-        Parea(90);
         PR = false;
             ListaER();
+        Parea(90);
+        
         CLP();
         
     }

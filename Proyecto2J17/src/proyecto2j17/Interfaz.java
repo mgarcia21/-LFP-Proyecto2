@@ -31,11 +31,17 @@ public class Interfaz extends javax.swing.JFrame {
     ArrayList<Producciones> Prod;
     ArrayList<String> contER = new ArrayList();
     ArrayList<String> contPR = new ArrayList();
+    ArrayList nodos = new ArrayList();
+    ArrayList partes = new ArrayList();
     Tokens temporalT;
     Errores temporalE;
     int prueba = 0;
     int NoTab = 0;
     int TabA =0;
+    int ERsel = 0;
+    int PRsel = 0;
+    int posicion = 0;
+    String codigo = "";
     String[] ubica = new String[5];
     
     
@@ -473,7 +479,17 @@ public class Interfaz extends javax.swing.JFrame {
     }//GEN-LAST:event_ButtonA1ActionPerformed
 
     private void ButtonGCLActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonGCLActionPerformed
-       
+       ERsel = ListaCL.getSelectedIndex();
+       String Expresion;
+       Expresion = ER.get(ERsel).getER();
+       String[] parts = Expresion.split("//");
+        
+        CrearCodigo(parts);
+        
+        
+        
+        
+        
     }//GEN-LAST:event_ButtonGCLActionPerformed
 
     /**
@@ -571,7 +587,7 @@ public class Interfaz extends javax.swing.JFrame {
        for (int i = 0;i<ER.size();i++){
            contER.add(ER.get(i).getTitulo());
           model.addElement(contER.get(i));
-           System.out.println(ER.get(i).getTitulo()+" -> "+ER.get(i).getER());
+          // System.out.println(ER.get(i).getTitulo()+" -> "+ER.get(i).getER());
         }
        
        
@@ -587,15 +603,234 @@ public class Interfaz extends javax.swing.JFrame {
        for (int i = 0;i<Prod.size();i++){
            contPR.add(Prod.get(i).getTitulo());
           model.addElement(contPR.get(i));
-           System.out.println(Prod.get(i).getTitulo()+" -> "+Prod.get(i).getProduccion());
+        //   System.out.println(Prod.get(i).getTitulo()+" -> "+Prod.get(i).getProduccion());
         }
         
         
        
     }
 
+    private void CrearCodigo(String[] parts) {
+        
+        for (int k = 1;k<parts.length;k++){
+            partes.add(parts[k]);
+            
+            
+        }
+        boolean vuelta = false;
+      codigo ="digraph{\n" +
+        "rankdir=UD;";
+        nodos = CrearNodos(parts);
+        int papo = 1;
+        buscarParentesis(partes);
+        buscarmasastint(partes,0);
+        buscarConcat(partes,0);
+        buscarO(partes,0);
+        
+        System.out.println(codigo);
+        
+        
+        
+        
+        
+    }
+
+    private ArrayList CrearNodos(String[] parts) {
+        
+        
+        
+        
+        
+        ArrayList nodos = new ArrayList();
+        int n=1;
+        for (int i =1; i < parts.length;i++){
+            if (parts[i].equals("(") || parts[i].equals(")")){
+                nodos.add(parts[i]);
+                
+                
+            }else{
+                nodos.add(n);
+                codigo+="\nn"+n+"[label=\""+parts[i]+"\",shape=\"circle\"];";
+                n++;
+                
+            }
+            
+            
+            
+            
+        }
+        System.out.println(codigo);
+        for(int i =0 ; i<nodos.size();i++){
+            System.out.println(nodos.get(i));
+        }
+        
+        return nodos;
+    }
+
+    private void buscarParentesis(ArrayList parts) {
+        boolean pare = false;
+        
+        ArrayList par = new ArrayList();
+        
+        for(int i = 0; i<parts.size();i++){
+            
+            if(parts.get(i).equals("(")){
+                debugeo();
+                posicion = i;
+                
+            pare = true;
+            }else if(parts.get(i).equals(")")){
+                
+                buscarmasastint(par, posicion);
+                buscarConcat(par, posicion);
+                buscarO(par,posicion);
+                nodos.set(posicion, nodos.get(posicion+1));
+                nodos.set(i, nodos.get(i-1));
+                
+                pare = false;
+            }
+            if (pare){
+                par.add(parts.get(i));
+            }
+            
+        }
+        
+        
+        
+        
+        
+    }
+
+    private void buscarmasastint(ArrayList parts, int pos) {
+        for (int i = 0;i<parts.size();i++){
+            switch(parts.get(i).toString()){
+                case"+":
+                    codigo+="\nn"+nodos.get(i+pos)+"->n"+nodos.get(i+pos-1)+";";
+                    nodos.set(i+pos-1,i+pos);
+                    partes.set(i+pos,"&");
+                    if (partes.get(i+pos-1).equals(")")){
+                        debugeo();
+                        for(int l = i + pos ;l>=posicion;l--){
+                            debugeo();
+                            nodos.set(l, i+pos-1);
+                            
+                            
+                        }
+                        
+                        
+                    }
+                    break;
+                case"*":
+                    
+                    codigo+="\nn"+nodos.get(i+pos)+"->n"+nodos.get(i+pos-1)+";";
+                    nodos.set(i+pos-1,i+pos);
+                    partes.set(i+pos,"&");
+                    if (partes.get(i+pos-1).equals(")")){
+                        debugeo();
+                        for(int l = i + pos ;l>=posicion;l--){
+                            debugeo();
+                            nodos.set(l, i+pos-1);
+                            
+                            
+                        }
+                        
+                        
+                    }
+                    
+                    
+                    break;
+                case"?":
+                    codigo+="\nn"+nodos.get(i+pos)+"->n"+nodos.get(i+pos-1)+";";
+                    nodos.set(i+pos-1,i+pos);
+                    partes.set(i+pos,"&");
+                    if (partes.get(i+pos-1).equals(")")){
+                        debugeo();
+                        for(int l = i + pos ;l>=posicion;l--){
+                            debugeo();
+                            nodos.set(l, i+pos-1);
+                            
+                            
+                        }
+                        
+                        
+                    }
+                    break;
+                
+                
+                
+                
+            }
+            
+            
+            
+            
+            
+        }
+        
+        debugeo();
+        
+        
+        
+        
+    }
+
+    private void buscarConcat(ArrayList parts,int pos) {
+        for (int i = 0;i<parts.size();i++){
+            if(parts.get(i).equals(".")){
+                    codigo+="\nn"+nodos.get(i+pos)+"->n"+nodos.get(i+pos-1)+";";
+                    codigo+="\nn"+nodos.get(i+pos)+"->n"+nodos.get(i+pos+1)+";";
+                    nodos.set(i+pos-1,i+pos);
+                    nodos.set(i+pos+1,i+pos);
+                   partes.set(i+pos,"&");
+                   
+                   debugeo();
+                   for (int k =i+1;k<nodos.size()-3;k++){
+                       nodos.set(i+pos+k,i+pos+1);
+                       
+                       
+                   }
+                   debugeo();
+            }
+                
+                
+                
+                
+                
+            }
+            
+            
+            
+            
+            
+        }
+    
+
+    private void buscarO(ArrayList parts, int pos) {
+        for (int i = 0;i<parts.size();i++){
+            if(parts.get(i).equals("|")){
+                    codigo+="\nn"+nodos.get(i+pos)+"->n"+nodos.get(i+pos-1)+";";
+                    codigo+="\nn"+nodos.get(i+pos)+"->n"+nodos.get(i+pos+1)+";";
+                    nodos.set(i+pos-1,i+pos);
+                    nodos.set(i+pos+1,i+pos);
+                    partes.set(i+pos,"&");
+                    
+                    
+            }
+                
+                
+                
+                
+                
+            }
+            
+            
+            
+            
+            
+        }
+    }
+
   
     
     
     
-}
