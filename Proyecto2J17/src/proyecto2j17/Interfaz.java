@@ -10,6 +10,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.*;
 import javax.swing.JTextField;
@@ -25,6 +26,7 @@ public class Interfaz extends javax.swing.JFrame {
     Errores[] cabezaE = new Errores[5];
     boolean[] guardado = new boolean[5];
     String[] archivo = new String[5];
+    ArrayList<MiniToken> TpS = new ArrayList();
     Tokens temporalT;
     Errores temporalE;
     int prueba = 0;
@@ -45,6 +47,7 @@ public class Interfaz extends javax.swing.JFrame {
             cabezaT[i] = new Tokens("","","",0,0,0,null);
             cabezaE[i] = new Errores("", "", "", "", 0, 0, null);
             ubica[i]="";
+            
         }
     }
 
@@ -211,7 +214,7 @@ public class Interfaz extends javax.swing.JFrame {
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         if (NoTab <5){
         tabs[NoTab] = new JTextArea();
-        tabs[NoTab].setText(""+NoTab);
+        tabs[NoTab].setText("");
         tabs[NoTab].setAutoscrolls(true);
         JScrollPane scroll = new JScrollPane (tabs[NoTab], 
         JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
@@ -322,7 +325,7 @@ public class Interfaz extends javax.swing.JFrame {
         cabezaE[TabA] = lexico.getCabezaE();
         JTokens.setEnabled(true);
         JErrores.setEnabled(true);
-        debugeo();
+        CrearArray();
         
         
         
@@ -495,6 +498,30 @@ public class Interfaz extends javax.swing.JFrame {
     private void debugeo() {
         int xyz =0;
         xyz++;
+    }
+
+    private void CrearArray() {
+        TabA = Paneles.getSelectedIndex();
+        int num = 0;
+        temporalT = cabezaT[TabA].getSiguiente();
+        debugeo();
+        while(temporalT != null){
+            if (temporalT.getId() != 0){
+                TpS.add(new MiniToken(temporalT.getLexema(),temporalT.getId(),temporalT.getCompLex()));
+                
+                num++;   
+                
+            }
+            temporalT = temporalT.getSiguiente();
+        }
+        debugeo();
+        for (int i = 0; i < TpS.size();i++){
+            System.out.println(TpS.get(i).getId() + "    " + TpS.get(i).getLexema() + "     " + TpS.get(i).getTipo());
+        }
+        
+        
+        
+        
     }
     
     

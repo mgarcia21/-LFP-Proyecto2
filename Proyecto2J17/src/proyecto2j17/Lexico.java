@@ -56,7 +56,7 @@ public class Lexico extends Interfaz {
             
             for(int i = 0; i < line.length(); i++) {
                 ascii = (int)line.charAt(i);
-         System.out.println(ascii +"  "+ (char)ascii + "  "+ estado);
+//         System.out.println(ascii +"  "+ (char)ascii + "  "+ estado);
                 switch (estado){
                     
                     case 0:
