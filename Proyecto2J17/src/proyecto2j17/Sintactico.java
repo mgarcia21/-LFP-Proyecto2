@@ -725,7 +725,7 @@ public class Sintactico extends Interfaz{
             
         }
         if (igual){
-            ErrorS("No Terminal se repite", compara);
+            ErrorS("No Terminal se repite en conjunto", compara);
             igual = false;
         }
         
@@ -746,7 +746,7 @@ public class Sintactico extends Interfaz{
             
         }
         if (igual){
-            ErrorS("Terminal se repite", compara);
+            ErrorS("Terminal se repite en conjunto", compara);
             igual = false;
         }
     }

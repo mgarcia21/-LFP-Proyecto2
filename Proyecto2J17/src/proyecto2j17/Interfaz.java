@@ -491,8 +491,53 @@ public class Interfaz extends javax.swing.JFrame {
     }//GEN-LAST:event_JErroresActionPerformed
 
     private void ButtonA1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonA1ActionPerformed
-
+        TabA = Paneles.getSelectedIndex();
+        String produce = "";
+        String line = "";
+        codigo = "digraph{\n" +
+        "rankdir=LR\n" +
+        "n1[label=\"i\",shape=\"circle\"];\n" +
+        "n2[label=\"P\",shape=\"circle\"];\n" +
+        "n3[label=\"q\",shape=\"circle\"];\n" +
+        "n1->n2[label=\"λ,λ;#\"];\n" +
+        "n2->n3[label=\"λ,λ;<"+Inicio+">\"];\n";
         
+        reparar();
+        
+        for(int i =0;i<Prod.size();i++){
+            String[] partsR = Prod.get(i).getProduccion().split("//");
+            for(int j = 1;j<partsR.length;j++ ){
+                System.out.println(partsR[j]);
+                line = line +partsR[j];
+                if(partsR[j].equals("|")){
+                    produce +="λ,"+Prod.get(i).getTitulo()+";"+line.substring(0, line.length()-1)+"\n";
+                    line = "";
+                }
+                
+            }
+            produce +="λ,"+Prod.get(i).getTitulo()+";"+line+"\n";
+                    line = "";
+        }
+        produce += "-----------------------------------------\n";
+        
+        for(int i = 0;i<T.size();i++){
+            produce+=T.get(i).toString() +","+T.get(i).toString()+";λ\n";
+            
+        }
+        
+        codigo+="n3->n3[label=\""+produce+"\"];\n";
+        codigo+="n4[label=\"f\",shape=\"doublecircle\"];\n"
+                + "n3->n4[label=\"λ,#;λ\"];}";
+        
+        System.out.println(codigo);
+        
+        Dibujo dib = new Dibujo();
+        dib.Dibujar(codigo,ubica[TabA],"AP");
+        dib.setVisible(true);
+        
+        
+        
+        //System.out.println(codigo);
 
 
 
@@ -890,6 +935,45 @@ public class Interfaz extends javax.swing.JFrame {
             return true;
         }
         return false;
+    }
+
+    private void reparar() {
+        String prub = "";
+        boolean si = false;
+        for (int i = 0;i<Prod.size();i++){
+            
+            String[] partsR = Prod.get(i).getProduccion().split("//");
+            for (int j = 0;j<partsR.length;j++){
+                if(si){
+                   prub = prub + partsR[j]; 
+                    
+                    
+                }else{
+                    prub = prub +"//"+partsR[j];
+                }
+                if(partsR[j].equals("<")){
+                    
+                    si = true;
+                }else if(partsR[j].equals(">")){
+                    si = false;
+                }
+                
+            }
+            //System.out.println(prub);
+            Prod.get(i).setProduccion(prub);
+            prub ="";
+            
+            
+            
+            
+        }
+        
+        for(int k =0; k < Prod.size();k++){
+            //System.out.println(Prod.get(k).getProduccion());
+            
+        }
+        
+        
     }
 }
 
