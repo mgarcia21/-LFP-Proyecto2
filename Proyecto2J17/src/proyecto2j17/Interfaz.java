@@ -27,6 +27,8 @@ public class Interfaz extends javax.swing.JFrame {
     boolean[] guardado = new boolean[5];
     String[] archivo = new String[5];
     ArrayList<MiniToken> TpS = new ArrayList();
+    ArrayList<ExpresionRegular> ER;
+    ArrayList<String> contER = new ArrayList();
     Tokens temporalT;
     Errores temporalE;
     int prueba = 0;
@@ -95,6 +97,7 @@ public class Interfaz extends javax.swing.JFrame {
             }
         });
 
+        ListaCL.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         ListaCL.setToolTipText("Componentes Lexicos");
         ListaCL.setName(""); // NOI18N
         jScrollPane1.setViewportView(ListaCL);
@@ -335,7 +338,7 @@ public class Interfaz extends javax.swing.JFrame {
            
        }
         temporalE.setSiguiente(sintactico.getCabezaEr().getSiguiente()); 
-        
+        PoblarER(sintactico.getER());
         
         
         
@@ -487,7 +490,7 @@ public class Interfaz extends javax.swing.JFrame {
     private javax.swing.JButton ButtonGCL;
     private javax.swing.JMenuItem JErrores;
     private javax.swing.JMenuItem JTokens;
-    private javax.swing.JList ListaCL;
+    public javax.swing.JList ListaCL;
     private javax.swing.JList ListaP;
     private javax.swing.JTabbedPane Paneles;
     private javax.swing.ButtonGroup buttonGroup1;
@@ -533,6 +536,24 @@ public class Interfaz extends javax.swing.JFrame {
         
         
     }
+
+    private void PoblarER(ArrayList<ExpresionRegular> er) {
+       ER = er;
+       DefaultListModel<String> model = new DefaultListModel<>();
+       ListaCL.setModel(model);
+       for (int i = 0;i<ER.size();i++){
+           contER.add(ER.get(i).getTitulo());
+          model.addElement(contER.get(i));
+           
+        }
+       
+       
+       
+       
+       
+    }
+
+  
     
     
     

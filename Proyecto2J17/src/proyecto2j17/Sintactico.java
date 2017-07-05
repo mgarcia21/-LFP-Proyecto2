@@ -19,6 +19,10 @@ public class Sintactico extends Interfaz{
     private Errores CabezaEr;
     Errores error;
     Errores temporalEr;
+    String ExR = "";
+    String Titulo;
+    private ArrayList<ExpresionRegular> ER = new ArrayList();
+    boolean PR = false;
     
     public Sintactico(ArrayList<MiniToken> tokens){
        this.tokens = tokens;
@@ -44,7 +48,17 @@ public class Sintactico extends Interfaz{
     
     public void Parea(int analisis){
         if (pre == analisis){
+            if (PR){
+                ExR = ExR + tokens.get(pos).getLexema();
+            }
+            
+            
+            
+            
             pos++;
+            
+            
+            
             if(pos==tokens.size()){
                 pre = -1;
             }else{
@@ -93,6 +107,8 @@ public class Sintactico extends Interfaz{
     public void CL() {
         PP();
         Parea(90);
+        PR = false;
+            ListaER();
         CLP();
         
     }
@@ -101,12 +117,16 @@ public class Sintactico extends Interfaz{
     public void CLP(){
         if(pre == 95 || pre == 165 || pre == 155 || pre == 55){
             PP();
+            PR = false;
+            ListaER();
             Parea(90);
+            
             CLP();
         }
     }
 //    PP -> id ::= PR
     public void PP(){
+        Titulo = tokens.get(pos).getLexema();
         Parea(55);
         Parea(60);
         PR();
@@ -117,6 +137,7 @@ public class Sintactico extends Interfaz{
     
 //      PR -> Q PR'
     public void PR() {
+        PR = true;
         Q();
         PRP();
     }
@@ -457,6 +478,26 @@ public class Sintactico extends Interfaz{
             
         }
         temporalEr.setSiguiente(error);
+    }
+
+    private void ListaER() {
+        debugeo();
+        getER().add(new ExpresionRegular(Titulo, ExR));
+        ExR="";
+        
+        
+        
+    }
+
+    private void debugeo() {
+        int xy = 2;
+    }
+
+    /**
+     * @return the ER
+     */
+    public ArrayList<ExpresionRegular> getER() {
+        return ER;
     }
 
     
