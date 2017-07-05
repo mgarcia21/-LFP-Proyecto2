@@ -107,9 +107,14 @@ public class Interfaz extends javax.swing.JFrame {
 
         jScrollPane2.setViewportView(ListaP);
 
-        ButtonGCL.setLabel("Graficar");
+        ButtonGCL.setText("Graficar Componente Lexico");
+        ButtonGCL.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ButtonGCLActionPerformed(evt);
+            }
+        });
 
-        jButton3.setText("Graficar");
+        jButton3.setText("Graficar Produccion");
 
         ButtonA1.setText("Graficar AP");
         ButtonA1.addActionListener(new java.awt.event.ActionListener() {
@@ -198,7 +203,7 @@ public class Interfaz extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                    .addComponent(ButtonGCL, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)
+                    .addComponent(ButtonGCL, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -466,6 +471,10 @@ public class Interfaz extends javax.swing.JFrame {
     private void ButtonA1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonA1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_ButtonA1ActionPerformed
+
+    private void ButtonGCLActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonGCLActionPerformed
+       
+    }//GEN-LAST:event_ButtonGCLActionPerformed
 
     /**
      * @param args the command line arguments

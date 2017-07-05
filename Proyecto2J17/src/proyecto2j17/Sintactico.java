@@ -51,10 +51,10 @@ public class Sintactico extends Interfaz{
     public void Parea(int analisis){
         if (pre == analisis){
             if (PR){
-                ExR = ExR + tokens.get(pos).getLexema();
+                ExR = ExR +"//"+ tokens.get(pos).getLexema();
             }
             if (PR2){
-                ExR = ExR + tokens.get(pos).getLexema();
+                ExR = ExR + "//"+tokens.get(pos).getLexema();
             
         }
             
