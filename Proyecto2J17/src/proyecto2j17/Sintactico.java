@@ -70,11 +70,11 @@ public class Sintactico extends Interfaz{
         Parea(145);
         GRAM();
         RESERV();
-//        GRADEF();
-//        Parea(140);
-//        Parea(150);
-//        Parea(45);
-//        Parea(145);
+        GRADEF();
+        Parea(140);
+        Parea(150);
+        Parea(45);
+        Parea(145);
         
     }
 
@@ -249,6 +249,188 @@ public class Sintactico extends Interfaz{
         Parea(160);
                 
                
+        
+        
+    }
+    
+//    GRADEF -> [[Gramatica: id]]NT
+    public void GRADEF(){
+        Parea(140);
+        Parea(140);
+        Parea(40);
+        Parea(165);
+        Parea(55);
+        Parea(145);
+        Parea(145);
+        NT();
+        
+    }
+    
+//    NT -> No_Terminales={LID} TE
+    public void NT(){
+        Parea(5);
+        Parea(130);
+        Parea(105);
+        LID();
+        Parea(110);
+        TE();
+        
+        
+    }
+    
+//    TE -> Terminales={LID} IN
+    public void TE(){
+        Parea(10);
+        Parea(130);
+        Parea(105);
+        LID();
+        Parea(110);
+        IN();
+        
+        
+    }
+    
+//    LID -> id LID'
+    public void LID(){
+        Parea(55);
+        LIDP();
+        
+    }
+    
+    
+//    LID' -> ,id LID'
+//            |eps
+    public void LIDP(){
+        if(pre == 115){
+            Parea(115);
+            Parea(55);
+            LIDP();
+            
+            
+        }
+        
+        
+    }
+    
+//    IN -> Inicio=<id> PROD
+    public void IN(){
+        Parea(15);
+        Parea(130);
+        Parea(120);
+        Parea(55);
+        Parea(125);
+        PROD();
+        
+        
+        
+    }
+    
+//    PROD -> Producciones={ LPRO }
+    public void PROD(){
+        Parea(20);
+        Parea(130);
+        Parea(105);
+        LPRO();
+        Parea(110);
+
+    }
+    
+//    LPRO -> IP $ LPRO'
+    public void LPRO(){
+        IP();
+        Parea(90);
+        LPROP();
+        
+        
+    }
+    
+//    LPRO' -> IP $ LPRO'
+//        |eps
+    public void LPROP(){
+        if(pre == 120){
+            IP();
+            Parea(90);
+            LPROP();
+            
+            
+        }
+    }
+    
+//    IP -> <id> ::= PO
+    public void IP(){
+        Parea(120);
+        Parea(55);
+        Parea(125);
+        Parea(60);
+        PO();
+        
+    }
+    
+//    PO -> POT PO'
+    public void PO(){
+        POT();
+        POP();
+        
+        
+        
+    }
+    
+//    PO' -> POT PO'
+//      |eps
+    public void POP(){
+       if ( pre == 55 || pre == 120){
+           POT();
+           POP();
+           
+       }  
+        
+    }
+    
+    
+//    POT -> POF POT'
+    public void POT(){
+        POF();
+        POTP();
+        
+        
+    }
+    
+    
+    
+//    POT' -> |POF POT'
+//        |eps
+
+    public void POTP(){
+        if (pre == 85){
+            Parea(85);
+            POF();
+            POTP();
+            
+        }
+          
+        
+    }
+    
+//    POF -> id
+//      |<id>
+//      |'epsilon'
+    public void POF(){
+        if (pre == 55){
+            Parea(55);
+        }else if (pre == 120){
+            Parea(120);
+            Parea(55);
+            Parea(125);
+            
+        }else if (pre == 25){
+            Parea(25);
+            
+            
+        }else{
+            Error("Se Esperaba id o <id>");
+        }
+        
+        
         
         
     }
