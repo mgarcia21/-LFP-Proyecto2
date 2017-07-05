@@ -510,6 +510,7 @@ public class Interfaz extends javax.swing.JFrame {
     }
 
     private void CrearArray() {
+        TpS.clear();
         TabA = Paneles.getSelectedIndex();
         int num = 0;
         temporalT = cabezaT[TabA].getSiguiente();

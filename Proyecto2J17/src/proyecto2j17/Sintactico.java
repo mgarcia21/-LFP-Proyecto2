@@ -69,7 +69,7 @@ public class Sintactico extends Interfaz{
         Parea(45);
         Parea(145);
         GRAM();
-//        RESERV();
+        RESERV();
 //        GRADEF();
 //        Parea(140);
 //        Parea(150);
@@ -210,7 +210,48 @@ public class Sintactico extends Interfaz{
         
     }
     
+//    RESERV -> [[reservadas]]RES
+    public void RESERV(){
+        Parea(140);
+        Parea(140);
+        Parea(35);
+        Parea(145);
+        Parea(145);
+        RES();
+        
+    }
     
+//    RES -> L $ RES'
+    public void RES(){
+        L();
+        Parea(90);
+        RESP();
+        
+        
+    }
+    
+//    RES' -> L $ RES'
+//       |eps
+    public void RESP(){
+        if(pre == 55){
+            L();
+            Parea(90);
+            RESP();
+        }
+        
+        
+    }
+    
+//    L-> id::="id"
+    public void L(){
+        Parea(55);
+        Parea(60);
+        Parea(160);
+                
+               
+        
+        
+    }
     
     
     
