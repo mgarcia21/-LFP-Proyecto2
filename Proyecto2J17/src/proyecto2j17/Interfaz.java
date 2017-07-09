@@ -48,6 +48,9 @@ public class Interfaz extends javax.swing.JFrame {
     int ERsel = 0;
     int PRsel = 0;
     int posicion = 0;
+    int eliminados =0;
+    boolean cerrado = false;
+   int y= 0;
     String codigo = "";
     String[] ubica = new String[5];
     
@@ -507,7 +510,7 @@ public class Interfaz extends javax.swing.JFrame {
         for(int i =0;i<Prod.size();i++){
             String[] partsR = Prod.get(i).getProduccion().split("//");
             for(int j = 1;j<partsR.length;j++ ){
-                System.out.println(partsR[j]);
+//                System.out.println(partsR[j]);
                 line = line +partsR[j];
                 if(partsR[j].equals("|")){
                     produce +="λ,"+Prod.get(i).getTitulo()+";"+line.substring(0, line.length()-1)+"\n";
@@ -687,7 +690,7 @@ public class Interfaz extends javax.swing.JFrame {
     }
 
     private void CrearCodigo(String[] parts) {
-        
+        eliminados = 0;
         for (int k = 1;k<parts.length;k++){
             partes.add(parts[k]);
             
@@ -698,10 +701,29 @@ public class Interfaz extends javax.swing.JFrame {
         "rankdir=UD;";
         nodos = CrearNodos(parts);
         int papo = 1;
-        buscarParentesis(partes);
-        buscarmasastint(partes,0);
-        buscarConcat(partes,0);
-        buscarO(partes,0);
+        for(int i =0;i<nodos.size();i++){
+            System.out.println("0   "+nodos.get(i));
+        }
+        
+        BuscarP(nodos);
+        for(int i =0;i<nodos.size();i++){
+            System.out.println("1   "+nodos.get(i));
+        }
+        
+        
+
+        buscarmasastint(nodos,0);
+        for(int i =0;i<nodos.size();i++){
+            System.out.println("2   "+nodos.get(i));
+        }
+        buscarConcat(nodos,0);
+        for(int i =0;i<nodos.size();i++){
+            System.out.println("3   "+nodos.get(i));
+        }
+        buscarO(nodos,0);
+        for(int i =0;i<nodos.size();i++){
+            System.out.println("4   "+nodos.get(i));
+        }
         codigo+="}";
         System.out.println(codigo);
         
@@ -720,12 +742,30 @@ public class Interfaz extends javax.swing.JFrame {
         ArrayList nodos = new ArrayList();
         int n=1;
         for (int i =1; i < parts.length;i++){
-            if (parts[i].equals("(") || parts[i].equals(")")){
-                nodos.add(parts[i]);
+            if (parts[i].equals("(")){
+                nodos.add(41);
                 
+            }else if(parts[i].equals(")")){
+                nodos.add(42);
+                
+                
+            }else if (parts[i].equals("+") || parts[i].equals("?")|| parts[i].equals("*")){
+                nodos.add("3,"+n);
+                codigo+="\nn"+n+"[label=\""+parts[i]+"\",shape=\"circle\"];";
+                n++;
+                
+            }else if (parts[i].equals(".")){
+                nodos.add("2,"+n);
+                codigo+="\nn"+n+"[label=\""+parts[i]+"\",shape=\"circle\"];";
+                n++;
+                
+            }else if (parts[i].equals("|")){
+                nodos.add("1,"+n);
+                codigo+="\nn"+n+"[label=\""+parts[i]+"\",shape=\"circle\"];";
+                n++;
                 
             }else{
-                nodos.add(n);
+                nodos.add("0,"+n);
                 codigo+="\nn"+n+"[label=\""+parts[i]+"\",shape=\"circle\"];";
                 n++;
                 
@@ -735,7 +775,7 @@ public class Interfaz extends javax.swing.JFrame {
             
             
         }
-        System.out.println(codigo);
+//        System.out.println(codigo);
         for(int i =0 ; i<nodos.size();i++){
             System.out.println(nodos.get(i));
         }
@@ -778,58 +818,27 @@ public class Interfaz extends javax.swing.JFrame {
     }
 
     private void buscarmasastint(ArrayList parts, int pos) {
-        for (int i = 0;i<parts.size();i++){
-            switch(parts.get(i).toString()){
-                case"+":
-                    codigo+="\nn"+nodos.get(i+pos)+"->n"+nodos.get(i+pos-1)+";";
-                    nodos.set(i+pos-1,i+pos);
-                    partes.set(i+pos,"&");
-                    if (partes.get(i+pos-1).equals(")")){
-                        debugeo();
-                        for(int l = i + pos ;l>=posicion;l--){
-                            debugeo();
-                            nodos.set(l, i+pos-1);
-                            
-                            
-                        }
-                        
-                        
-                    }
+        
+        for (int i = pos;i<parts.size();i++){
+            String[] splite = parts.get(i).toString().split(",");
+            switch(splite[0]){
+                case "3":
+                    String[] splite2 = parts.get(i-1).toString().split(",");
+                    System.out.println(parts.get(i-1));
+                    System.out.println(splite[1]+"  "+splite2[0]);
+                    codigo+="\nn"+splite[1]+"->n"+splite2[1]+";";
+                    nodos.set(i,"0,"+splite[1]);
+                    nodos.remove(i-1);
+                    eliminados++;
+                    i = pos;
                     break;
-                case"*":
-                    
-                    codigo+="\nn"+nodos.get(i+pos)+"->n"+nodos.get(i+pos-1)+";";
-                    nodos.set(i+pos-1,i+pos);
-                    partes.set(i+pos,"&");
-                    if (partes.get(i+pos-1).equals(")")){
-                        debugeo();
-                        for(int l = i + pos ;l>=posicion;l--){
-                            debugeo();
-                            nodos.set(l, i+pos-1);
-                            
-                            
-                        }
-                        
-                        
-                    }
+                case "42":
                     
                     
-                    break;
-                case"?":
-                    codigo+="\nn"+nodos.get(i+pos)+"->n"+nodos.get(i+pos-1)+";";
-                    nodos.set(i+pos-1,i+pos);
-                    partes.set(i+pos,"&");
-                    if (partes.get(i+pos-1).equals(")")){
-                        debugeo();
-                        for(int l = i + pos ;l>=posicion;l--){
-                            debugeo();
-                            nodos.set(l, i+pos-1);
-                            
-                            
-                        }
-                        
-                        
-                    }
+                    eliminados++;
+                    i = parts.size();
+                    
+                    
                     break;
                 
                 
@@ -851,23 +860,29 @@ public class Interfaz extends javax.swing.JFrame {
     }
 
     private void buscarConcat(ArrayList parts,int pos) {
-        for (int i = 0;i<parts.size();i++){
-            if(parts.get(i).equals(".")){
-                    codigo+="\nn"+nodos.get(i+pos)+"->n"+nodos.get(i+pos-1)+";";
-                    codigo+="\nn"+nodos.get(i+pos)+"->n"+nodos.get(i+pos+1)+";";
-                    nodos.set(i+pos-1,i+pos);
-                    nodos.set(i+pos+1,i+pos);
-                   partes.set(i+pos,"&");
-                   
-                   debugeo();
-                   for (int k =i+1;k<nodos.size()-3;k++){
-                       nodos.set(i+pos+k,i+pos+1);
-                       
-                       
-                   }
-                   debugeo();
-            }
+        for (int i = pos;i<parts.size();i++){
+            String[] splite = parts.get(i).toString().split(",");
+            switch(splite[0]){
                 
+                case "2":
+                    String[] splite2 = parts.get(i-1).toString().split(",");
+                    String[] splite3 = parts.get(i+1).toString().split(",");
+                    codigo+="\nn"+splite[1]+"->n"+splite2[1]+";";
+                    codigo+="\nn"+splite[1]+"->n"+splite3[1]+";";
+                    nodos.set(i,"0,"+splite[1]);
+                    nodos.remove(i+1);
+                    eliminados++;
+                    nodos.remove(i-1);
+                    eliminados++;
+                    i = pos;
+                    break;
+                case "42":
+                    
+                    eliminados++;
+                    i = parts.size();
+                    
+                    
+                    break;
                 
                 
                 
@@ -879,25 +894,50 @@ public class Interfaz extends javax.swing.JFrame {
             
             
         }
+            
+            
+            
+            
+            
+        }
     
 
     private void buscarO(ArrayList parts, int pos) {
-        for (int i = 0;i<parts.size();i++){
-            if(parts.get(i).equals("|")){
-                    codigo+="\nn"+nodos.get(i+pos)+"->n"+nodos.get(i+pos-1)+";";
-                    codigo+="\nn"+nodos.get(i+pos)+"->n"+nodos.get(i+pos+1)+";";
-                    nodos.set(i+pos-1,i+pos);
-                    nodos.set(i+pos+1,i+pos);
-                    partes.set(i+pos,"&");
+        for (int i = pos;i<parts.size();i++){
+            String[] splite = parts.get(i).toString().split(",");
+            switch(splite[0]){
+                case "1":
+                    String[] splite2 = parts.get(i-1).toString().split(",");
+                    String[] splite3 = parts.get(i+1).toString().split(",");
+                    codigo+="\nn"+splite[1]+"->n"+splite2[1]+";";
+                    codigo+="\nn"+splite[1]+"->n"+splite3[1]+";";
                     
+                    nodos.set(i,"0,"+splite[1]);
+                    nodos.remove(i+1);
+                    eliminados++;
+                    nodos.remove(i-1);
+                    eliminados++;
+                    debugeo();
+                    i=pos;
+                    break;
+                case "42":
+                    nodos.remove(i);
+                    eliminados++;
+                    i = parts.size();
+                    cerrado = true;
                     
+                    break;
+                
+                
+                
+                
             }
-                
-                
-                
-                
-                
-            }
+            
+            
+            
+            
+            
+        }
             
             
             
@@ -975,6 +1015,60 @@ public class Interfaz extends javax.swing.JFrame {
         
         
     }
+
+    private void BuscarP(ArrayList nodos) {
+        boolean pare = false;
+        ArrayList par = new ArrayList();
+        
+        for(int i = 0; i<nodos.size();i++){
+            if(nodos.get(i).toString().equals("41")){
+                debugeo();
+                posicion = i;
+                nodos.remove(i);
+                eliminados++;
+                
+                
+                buscarmasastint(nodos, posicion);
+                
+                buscarConcat(nodos, posicion);
+                
+                buscarO(nodos, posicion);
+                debugeo();
+                for(int j = 0;j<nodos.size();j++){
+                    if (nodos.get(j).toString().equals("42")){
+                        nodos.remove(j);
+                        j = nodos.size();
+                    }
+                    
+                }
+                
+                
+            pare = true;}
+//            }else if(nodos.get(i).toString().equals("42")){
+//                
+//                
+//                buscarConcat(par, posicion);
+//                buscarO(par,posicion);
+//                nodos.set(posicion, nodos.get(posicion+1));
+//                nodos.set(i, nodos.get(i-1));
+//                
+//                pare = false;
+//            }
+            if (pare){
+                par.add(nodos.get(i));
+            }
+            
+            
+            
+        }
+    
+    
+    
+    
+    
+    }
+
+    
 }
 
     
