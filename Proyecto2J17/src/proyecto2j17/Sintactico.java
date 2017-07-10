@@ -32,6 +32,8 @@ public class Sintactico extends Interfaz{
     private ArrayList<Producciones> Prod = new ArrayList();
     boolean PR = false;
     boolean PR2 = false;
+    boolean panicoS = false;
+    boolean PanicoSe = false;
     
     public Sintactico(ArrayList<MiniToken> tokens){
        this.tokens = tokens;
@@ -44,13 +46,16 @@ public class Sintactico extends Interfaz{
     
     
     public void analizar(){
+        panicoS = false;
+        PanicoSe = false;
         pre = tokens.get(pos).getId();
         ER.clear();
         Prod.clear();
         S();      
         if(pos != tokens.size()){
-          System.out.println("Se acabaron prro " );  
-          Error("Ocurrio un error, se esperaba +, *, (:");
+          
+          Error("Tokens terminados antes de completar analisis");
+          
         }
         else{
            System.out.println("Analisis correcto prro");
@@ -81,8 +86,9 @@ public class Sintactico extends Interfaz{
                 pre= tokens.get(pos).getId();
             }
         }else{
-            System.out.println("Se esperaba idToken:" + analisis + "Tengo " + pre);
+      //      System.out.println("Se esperaba idToken:" + analisis + "Tengo " + pre);
             Error("Se esperaba idToken:" + analisis + "Tengo " + pre);
+            
         }
             
         
@@ -286,11 +292,13 @@ public class Sintactico extends Interfaz{
            
             if (tokens.get(pos).getLexema().equals(getER().get(i).getTitulo())){
                ErrorS("Nombre repetido",tokens.get(pos).getLexema());
+               
             }    
         }
         for(int i = 0;i < getR().size();i++){
             if (tokens.get(pos).getLexema().equals(getR().get(i))){
                ErrorS("Nombre repetido",tokens.get(pos).getLexema());
+               
             } 
             
             
@@ -536,6 +544,7 @@ public class Sintactico extends Interfaz{
     }
 
     private void Error(String Descripcion) {
+        panicoS = true;
         error = new Errores(tokens.get(pos).getLexema(),Descripcion,"Sintactico","",tokens.get(pos).getFila(),tokens.get(pos).getColumna(),null);
         
         temporalEr = getCabezaEr();
@@ -617,6 +626,7 @@ public class Sintactico extends Interfaz{
     }
 
     private void ErrorS(String Descripcion,String Error) {
+        PanicoSe = true;
         error = new Errores(Error,Descripcion,"Semantico","",tokens.get(pos).getFila(),tokens.get(pos).getColumna(),null);
         
         temporalEr = getCabezaEr();
@@ -655,6 +665,7 @@ public class Sintactico extends Interfaz{
         }else{
             ErrorS("No Esta Declarada", compara);
             declara = false;
+            
         }
         
         
@@ -688,6 +699,7 @@ public class Sintactico extends Interfaz{
             ErrorS("Terminal en No Teminales",compara);
             nova = false;
             
+            
         }
         
         
@@ -709,6 +721,7 @@ public class Sintactico extends Interfaz{
             ErrorS("No Terminal en Terminales",compara);
             novat = false;
             
+            
         }
         
         
@@ -729,6 +742,7 @@ public class Sintactico extends Interfaz{
         if (igual){
             ErrorS("No Terminal se repite en conjunto", compara);
             igual = false;
+            
         }
         
         
@@ -750,6 +764,7 @@ public class Sintactico extends Interfaz{
         if (igual){
             ErrorS("Terminal se repite en conjunto", compara);
             igual = false;
+            
         }
     }
 

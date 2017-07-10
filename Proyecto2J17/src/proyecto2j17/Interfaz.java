@@ -49,6 +49,7 @@ public class Interfaz extends javax.swing.JFrame {
     int PRsel = 0;
     int posicion = 0;
     int eliminados =0;
+    boolean Repetidas = false;
     boolean cerrado = false;
    int y= 0;
     String codigo = "";
@@ -386,10 +387,44 @@ public class Interfaz extends javax.swing.JFrame {
         R = sintactico.getR();
         Inicio = sintactico.getInicio();
         Chequeo();
+        if(lexico.panicoL == false && sintactico.panicoS == false && Repetidas == false && sintactico.PanicoSe == false){
+            JOptionPane.showMessageDialog(null, "Analisis realizado satisfactoriamente");
+            ButtonA1.setEnabled(true);
+            ButtonGCL.setEnabled(true);
+            jButton3.setEnabled(true);
+            ListaCL.setEnabled(true);
+            ListaP.setEnabled(true);
+        }
+        if(lexico.panicoL){
+            JOptionPane.showMessageDialog(null, "Existe un error en el analisis Lexio, revise reportes");
+            ButtonA1.setEnabled(false);
+            ButtonGCL.setEnabled(false);
+            jButton3.setEnabled(false);
+            ListaCL.setEnabled(false);
+            ListaP.setEnabled(false);
+            
+            
+        } 
+        if(sintactico.panicoS){
+            JOptionPane.showMessageDialog(null, "Existe un error en el analisis Sintactico, revise reportes");
+            ButtonA1.setEnabled(false);
+            ButtonGCL.setEnabled(false);
+            jButton3.setEnabled(false);
+            ListaCL.setEnabled(false);
+            ListaP.setEnabled(false);
+            
+        }
+        if(Repetidas || sintactico.PanicoSe){
+            JOptionPane.showMessageDialog(null, "Existe un error Semantico, revise reportes");
+            ButtonA1.setEnabled(false);
+            ButtonGCL.setEnabled(false);
+            jButton3.setEnabled(false);
+            ListaCL.setEnabled(false);
+            ListaP.setEnabled(false);
+            
+        }
         
-        
-        
-        
+        Repetidas = false;
         
         
         
@@ -539,7 +574,7 @@ public class Interfaz extends javax.swing.JFrame {
         codigo+="n4[label=\"f\",shape=\"doublecircle\"];\n"
                 + "n3->n4[label=\"λ,#;λ\"];}";
         
-        System.out.println(codigo);
+   //     System.out.println(codigo);
         
         Dibujo dib = new Dibujo();
         dib.Dibujar(codigo,ubica[TabA],"AP");
@@ -727,30 +762,30 @@ public class Interfaz extends javax.swing.JFrame {
         nodos = CrearNodos(parts);
         int papo = 1;
         for(int i =0;i<nodos.size();i++){
-            System.out.println("0   "+nodos.get(i));
+      //      System.out.println("0   "+nodos.get(i));
         }
         
         BuscarP(nodos);
         for(int i =0;i<nodos.size();i++){
-            System.out.println("1   "+nodos.get(i));
+   //         System.out.println("1   "+nodos.get(i));
         }
         
         
 
         buscarmasastint(nodos,0);
         for(int i =0;i<nodos.size();i++){
-            System.out.println("2   "+nodos.get(i));
+      //      System.out.println("2   "+nodos.get(i));
         }
         buscarConcat(nodos,0);
         for(int i =0;i<nodos.size();i++){
-            System.out.println("3   "+nodos.get(i));
+  //          System.out.println("3   "+nodos.get(i));
         }
         buscarO(nodos,0);
         for(int i =0;i<nodos.size();i++){
-            System.out.println("4   "+nodos.get(i));
+    //        System.out.println("4   "+nodos.get(i));
         }
         codigo+="}";
-        System.out.println(codigo);
+      //  System.out.println(codigo);
         
         
         
@@ -802,7 +837,7 @@ public class Interfaz extends javax.swing.JFrame {
         }
 //        System.out.println(codigo);
         for(int i =0 ; i<nodos.size();i++){
-            System.out.println(nodos.get(i));
+        //    System.out.println(nodos.get(i));
         }
         
         return nodos;
@@ -849,8 +884,8 @@ public class Interfaz extends javax.swing.JFrame {
             switch(splite[0]){
                 case "3":
                     String[] splite2 = parts.get(i-1).toString().split(",");
-                    System.out.println(parts.get(i-1));
-                    System.out.println(splite[1]+"  "+splite2[0]);
+     //               System.out.println(parts.get(i-1));
+       //             System.out.println(splite[1]+"  "+splite2[0]);
                     codigo+="\nn"+splite[1]+"->n"+splite2[1]+";";
                     nodos.set(i,"0,"+splite[1]);
                     nodos.remove(i-1);
@@ -972,10 +1007,10 @@ public class Interfaz extends javax.swing.JFrame {
 
     private void Chequeo() {
         if(repetidasERR()){
-            System.out.println("Repetidas");
+            Repetidas = true;
             error = new Errores("","","","",0,0,null);
         }else{
-            System.out.println("NO");
+            Repetidas = false;
         }
         
         

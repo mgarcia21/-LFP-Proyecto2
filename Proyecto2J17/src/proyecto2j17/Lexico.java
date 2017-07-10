@@ -24,10 +24,12 @@ public class Lexico extends Interfaz {
     private Errores CabezaE;
     boolean coment = false;
     boolean err = false;
+    boolean panicoL = false;
     Tokens temporalT;
     Errores temporalE;
     ArrayList<String> reservadas = new ArrayList();
     public void AnalisisLexico(int tabA, String texto){
+        panicoL = false;
         reservadas.add("No_Terminales");
         reservadas.add("Terminales");
         reservadas.add("Iniciales");
@@ -504,7 +506,7 @@ public class Lexico extends Interfaz {
         
         debugeo();
         if (estado == 999){
-             
+             panicoL = true;
             temporalE = getCabezaE();
             while(temporalE.getSiguiente() != null){
             temporalE = temporalE.getSiguiente();

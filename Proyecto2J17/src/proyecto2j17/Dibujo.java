@@ -179,7 +179,7 @@ ex.printStackTrace();
         File txt = new File("holi");
          writer = new BufferedWriter(new FileWriter(ubicacion+"codigo.txt"));
             writer.write(codigo);
-        System.out.println(ubicacion+"codigo.txt");
+     //   System.out.println(ubicacion+"codigo.txt");
                    
                     writer.close();
     }
