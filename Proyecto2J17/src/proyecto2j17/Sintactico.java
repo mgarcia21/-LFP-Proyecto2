@@ -58,7 +58,7 @@ public class Sintactico extends Interfaz{
           
         }
         else{
-           System.out.println("Analisis correcto prro");
+           
         }
     }
     
