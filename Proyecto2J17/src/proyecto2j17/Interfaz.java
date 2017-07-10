@@ -131,6 +131,11 @@ public class Interfaz extends javax.swing.JFrame {
         });
 
         jButton3.setText("Graficar Produccion");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         ButtonA1.setText("Graficar AP");
         ButtonA1.addActionListener(new java.awt.event.ActionListener() {
@@ -354,6 +359,7 @@ public class Interfaz extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem1KeyPressed
 
     private void ButtonAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonAActionPerformed
+        
         TabA = Paneles.getSelectedIndex();
         Lexico lexico = new Lexico();
         lexico.AnalisisLexico(TabA,tabs[TabA].getText());
@@ -363,6 +369,7 @@ public class Interfaz extends javax.swing.JFrame {
         JErrores.setEnabled(true);
         CrearArray();
        Sintactico sintactico = new Sintactico(TpS);
+       
        sintactico.analizar();
        
        temporalE = cabezaE[TabA];
@@ -571,6 +578,16 @@ public class Interfaz extends javax.swing.JFrame {
         
     }//GEN-LAST:event_ButtonGCLActionPerformed
 
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        
+        DefaultListModel<String> model = new DefaultListModel<>();
+        
+       model.clear();
+       ListaCL.clearSelection();
+       ListaCL.setModel(model);
+       
+    }//GEN-LAST:event_jButton3ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -661,8 +678,12 @@ public class Interfaz extends javax.swing.JFrame {
 
     private void PoblarER(ArrayList<ExpresionRegular> er) {
        ER = er;
+       
        DefaultListModel<String> model = new DefaultListModel<>();
+       model.clear();
+       ListaCL.clearSelection();
        ListaCL.setModel(model);
+       contER.clear();
        for (int i = 0;i<ER.size();i++){
            contER.add(ER.get(i).getTitulo());
           model.addElement(contER.get(i));
@@ -677,8 +698,12 @@ public class Interfaz extends javax.swing.JFrame {
 
     private void PoblarPR(ArrayList<Producciones> prod) {
         Prod = prod;
+        
        DefaultListModel<String> model = new DefaultListModel<>();
+        model.clear();
+       ListaP.clearSelection();
        ListaP.setModel(model);
+       contPR.clear();
        for (int i = 0;i<Prod.size();i++){
            contPR.add(Prod.get(i).getTitulo());
           model.addElement(contPR.get(i));

@@ -45,6 +45,8 @@ public class Sintactico extends Interfaz{
     
     public void analizar(){
         pre = tokens.get(pos).getId();
+        ER.clear();
+        Prod.clear();
         S();      
         if(pos != tokens.size()){
           System.out.println("Se acabaron prro " );  
